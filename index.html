@@ -2352,10 +2352,10 @@ let APP = {
 async function api(action, payload = {}) {
   const body = { action, token: APP.token, ...payload };
   try {
-    const res  = await fetch(GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+    const params = new URLSearchParams({ payload: JSON.stringify(body) });
+    const res  = await fetch(GAS_URL + '?' + params.toString(), {
+      method: 'GET',
+      redirect: 'follow'
     });
     const json = await res.json();
     if (json.code !== 200) throw new Error(json.data?.error || 'API Error');
