@@ -1121,7 +1121,7 @@ tr:hover td{background:var(--bg)}
               <div class="ph-ico">📊</div>
               <div>
                 <div class="ph-h1">Dashboard ภาพรวม</div>
-                <div class="ph-sub">The Greenfield · 15 มีนาคม 2568</div>
+                <div class="ph-sub">The Greenfield · <span id="dash-date-sub"></span></div>
               </div>
             </div>
             <div class="ph-acts">
@@ -1134,10 +1134,10 @@ tr:hover td{background:var(--bg)}
           </div>
         </div>
         <div class="stats">
-          <div class="sc"><div class="sc-ico p">🏠</div><div><div class="sc-v" id="stat-houses">128</div><div class="sc-l">บ้านทั้งหมด</div><div class="sc-s"><span class="up">↑3</span> เดือนนี้</div></div></div>
-          <div class="sc"><div class="sc-ico d">⚠️</div><div><div class="sc-v" id="stat-overdue">24</div><div class="sc-l">ค้างชำระ</div><div class="sc-s"><span class="dn">฿48,600</span></div></div></div>
-          <div class="sc"><div class="sc-ico w">🧾</div><div><div class="sc-v" id="stat-slip">5</div><div class="sc-l">สลิปรอ Approve</div></div></div>
-          <div class="sc"><div class="sc-ico a">🔧</div><div><div class="sc-v" id="stat-issues">3</div><div class="sc-l">ปัญหารอดำเนินการ</div></div></div>
+          <div class="sc"><div class="sc-ico p">🏠</div><div><div class="sc-v" id="stat-houses">—</div><div class="sc-l">บ้านทั้งหมด</div><div class="sc-s"><span class="up">↑3</span> เดือนนี้</div></div></div>
+          <div class="sc"><div class="sc-ico d">⚠️</div><div><div class="sc-v" id="stat-overdue">—</div><div class="sc-l">ค้างชำระ</div><div class="sc-s"><span class="dn">฿48,600</span></div></div></div>
+          <div class="sc"><div class="sc-ico w">🧾</div><div><div class="sc-v" id="stat-slip">—</div><div class="sc-l">สลิปรอ Approve</div></div></div>
+          <div class="sc"><div class="sc-ico a">🔧</div><div><div class="sc-v" id="stat-issues">—</div><div class="sc-l">ปัญหารอดำเนินการ</div></div></div>
         </div>
         <div class="g2">
           <div class="card">
@@ -1174,7 +1174,7 @@ tr:hover td{background:var(--bg)}
 
       <!-- ADMIN: HOUSES -->
       <div id="p-admin-houses" class="pane">
-        <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">🏠</div><div><div class="ph-h1">ข้อมูลบ้านทั้งหมด</div><div class="ph-sub">128 หน่วย · The Greenfield</div></div></div><div class="ph-acts"><button class="btn btn-ghost btn-sm" onclick="sw('addhouse')">+ เพิ่มบ้าน</button></div></div></div>
+        <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">🏠</div><div><div class="ph-h1">ข้อมูลบ้านทั้งหมด</div><div class="ph-sub"><span id="dash-hdr-houses">—</span> หน่วย · The Greenfield</div></div></div><div class="ph-acts"><button class="btn btn-ghost btn-sm" onclick="sw('addhouse')">+ เพิ่มบ้าน</button></div></div></div>
         <div class="card">
           <div class="ch"><div class="ch-ico">🏠</div><div class="ct">รายการบ้านทั้งหมด</div>
             <select class="fs" style="width:auto;padding:5px 10px;font-size:12px">
@@ -1212,22 +1212,16 @@ tr:hover td{background:var(--bg)}
       <div id="p-admin-issues" class="pane">
         <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">🔧</div><div><div class="ph-h1">แจ้งปัญหา</div><div class="ph-sub">จัดการปัญหาจากลูกบ้าน</div></div></div></div></div>
         <div class="tabs">
-          <button class="tab on" onclick="stab('ai','open',this)">🔴 รอดำเนินการ (3)</button>
-          <button class="tab" onclick="stab('ai','doing',this)">🟡 กำลังดำเนิน (2)</button>
-          <button class="tab" onclick="stab('ai','done',this)">🟢 เสร็จสิ้น (12)</button>
+          <button class="tab on" id="tab-iss-open" onclick="stab('ai','open',this)">🔴 รอดำเนินการ</button>
+          <button class="tab" id="tab-iss-doing" onclick="stab('ai','doing',this)">🟡 กำลังดำเนิน</button>
+          <button class="tab" id="tab-iss-done" onclick="stab('ai','done',this)">🟢 เสร็จสิ้น</button>
         </div>
-        <div id="ai-open" class="pane on"><div id="list-issues-pending">
-          <p class="text-mu" style="text-align:center;padding:20px;font-size:13px">กำลังโหลด...</p>
-        </div>
-        <div id="ai-doing" class="pane"><div id="list-issues-inprogress">
-          <div class="iss"><div class="iss-h"><span class="iss-t">รั้วพัง ซอย 2</span><span class="bd b-wn">กำลังดำเนิน</span></div><div class="iss-m">ประสานช่างแล้ว · คาดเสร็จ 18 มี.ค.</div></div>
-        </div>
-        <div id="ai-done" class="pane">
-          <div class="iss"><div class="iss-h"><span class="iss-t">ไฟทางเดินดับ ซอย 1</span><span class="bd b-ok">เสร็จสิ้น</span></div><div class="iss-m">✓ ดำเนินการเสร็จ 10 มี.ค. · ⭐ 4.5/5</div></div>
-        </div>
+        <div id="ai-open" class="pane on"><div id="list-issues-pending"><p class="text-mu" style="text-align:center;padding:20px;font-size:13px">กำลังโหลด...</p></div></div>
+        <div id="ai-doing" class="pane"><div id="list-issues-inprogress"><p class="text-mu" style="text-align:center;padding:20px;font-size:13px">กำลังโหลด...</p></div></div>
+        <div id="ai-done" class="pane"><div id="list-issues-done"><p class="text-mu" style="text-align:center;padding:20px;font-size:13px">กำลังโหลด...</p></div></div>
       </div>
 
-      <!-- ADMIN: VIO (แจ้งกระทำผิด) -->
+      <!-- ADMIN: VIO      <!-- ADMIN: VIO (แจ้งกระทำผิด) -->
       <div id="p-admin-vio" class="pane">
         <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">⚠️</div><div><div class="ph-h1">แจ้งกระทำผิด</div><div class="ph-sub">แจ้งเตือนลูกบ้านกระทำผิดกฎ</div></div></div><div class="ph-acts"><button class="btn btn-ghost btn-sm" onclick="openM('m-newvio')">+ แจ้งใหม่</button></div></div></div>
         <div class="card">
@@ -1240,175 +1234,42 @@ tr:hover td{background:var(--bg)}
 
       <!-- ADMIN: REQUEST (คำขอแก้ไข) -->
       <div id="p-admin-req" class="pane">
-        <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">📝</div><div><div class="ph-h1">คำขอแก้ไข</div><div class="ph-sub">รออนุมัติ 2 รายการ</div></div></div></div></div>
-        <div class="card">
-          <div class="ch"><div class="ch-ico">📝</div><div class="ct">คำขอแก้ไขข้อมูลบ้าน</div></div>
-          <div class="cb" id="list-change-reqs">
-            <div id="_req_placeholder" style="display:none">
-              <div>
-              <div class="sl">ข้อมูลที่ขอแก้ไข (แก้ไขก่อนอนุมัติได้)</div>
-              <div class="req-field">
-                <div class="req-field-old">Email เดิม: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3c4f53515f545d557c535058125f5351">[email&#160;protected]</a></div>
-                <div class="req-edit-row">
-                  <input type="text" class="fi" value="somchai.new@email.com" style="font-size:13px">
-                </div>
-              </div>
-              <div class="req-field">
-                <div class="req-field-old">เบอร์โทรเดิม: 081-234-5678</div>
-                <div class="req-edit-row">
-                  <input type="text" class="fi" value="081-999-8888" style="font-size:13px">
-                </div>
-              </div>
-              <div style="font-size:11px;color:var(--mu);margin-bottom:12px">📅 ส่งมาเมื่อ: 14 มี.ค. 2568 · โดย: สมชาย ใจดี</div>
-              <div style="display:flex;gap:8px;flex-wrap:wrap">
-                <button class="btn btn-xs btn-g" onclick="sw('reject')">✗ ปฏิเสธ</button>
-                <button class="btn btn-xs btn-a" onclick="sw('approve')">✓ อนุมัติ</button>
-              </div>
-            </div>
-            <div style="border:1.5px solid var(--bo);border-radius:12px;padding:15px;background:var(--card2)">
-              <div class="flex-between mb-12">
-                <div><strong style="font-size:14px">บ้าน 8/2</strong> — <span class="text-mu" style="font-size:12px">วิไล สุขใจ</span></div>
-                <span class="bd b-wn">รออนุมัติ</span>
-              </div>
-              <div class="sl">ข้อมูลรถที่ขอเพิ่ม</div>
-              <div class="req-field">
-                <div style="font-size:12px;color:var(--mu);margin-bottom:5px">ข้อมูลรถใหม่</div>
-                <div class="req-edit-row">
-                  <input type="text" class="fi" value="Toyota Camry สีขาว กข-9999 กรุงเทพ" style="font-size:13px">
-                </div>
-              </div>
-              <div style="font-size:11px;color:var(--mu);margin-bottom:12px">📅 ส่งมาเมื่อ: 13 มี.ค. 2568</div>
-              <div style="display:flex;gap:8px;flex-wrap:wrap">
-                <button class="btn btn-xs btn-g" onclick="sw('reject')">✗ ปฏิเสธ</button>
-                <button class="btn btn-xs btn-a" onclick="sw('approve')">✓ อนุมัติ</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">📝</div><div><div class="ph-h1">คำขอแก้ไข</div><div class="ph-sub" id="req-sub">รอการอนุมัติ</div></div></div></div></div>
+        <div class="card"><div class="ch"><div class="ch-ico">📝</div><div class="ct">คำขอแก้ไขข้อมูลบ้าน</div></div><div class="cb" id="list-change-reqs"><p class="text-mu" style="text-align:center;padding:20px;font-size:13px">กำลังโหลด...</p></div></div>
       </div>
 
-      <!-- ADMIN: ANNOUNCE -->
+      <!-- ADMIN: ANNOUNCE      <!-- ADMIN: ANNOUNCE -->
       <div id="p-admin-ann" class="pane">
         <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">📢</div><div><div class="ph-h1">ประกาศ</div><div class="ph-sub">จัดการข่าวสารและประกาศ</div></div></div><div class="ph-acts"><button class="btn btn-ghost btn-sm" onclick="openM('m-newann')">+ ออกประกาศ</button></div></div></div>
-        <div class="card">
-          <div class="ch"><div class="ch-ico">📢</div><div class="ct">ประกาศทั้งหมด</div></div>
-          <div class="cb">
-            <div class="ann"><div class="ann-dot ad-urg"></div><div style="flex:1"><div class="ann-t">ปิดน้ำชั่วคราว 20 มี.ค.</div><div class="ann-b">งดจ่ายน้ำระหว่าง 09:00–12:00 น. เพื่อซ่อมแซมท่อ</div><div class="ann-d">15 มี.ค. 2568 · <span class="bd b-ok" style="font-size:10px">เผยแพร่</span></div></div><button class="btn btn-xs btn-o">แก้ไข</button></div>
-            <div class="ann"><div class="ann-dot ad-evt"></div><div style="flex:1"><div class="ann-t">งานสังสรรค์ปีใหม่ไทย 2568</div><div class="ann-b">5 เมษายน 17:00 น. ที่ศาลาส่วนกลาง</div><div class="ann-d">10 มี.ค. 2568 · <span class="bd b-ok" style="font-size:10px">เผยแพร่</span></div></div><button class="btn btn-xs btn-o">แก้ไข</button></div>
-            <div class="ann"><div class="ann-dot ad-gen"></div><div style="flex:1"><div class="ann-t">กฎระเบียบการจอดรถ (ฉบับใหม่)</div><div class="ann-b">ปรับปรุงกฎระเบียบการจอดรถในพื้นที่ส่วนกลาง</div><div class="ann-d">5 มี.ค. 2568 · <span class="bd b-ok" style="font-size:10px">เผยแพร่</span></div></div><button class="btn btn-xs btn-o">แก้ไข</button></div>
-          </div>
-        </div>
+        <div class="card"><div class="ch"><div class="ch-ico">📢</div><div class="ct">ประกาศทั้งหมด</div></div><div class="cb" id="list-announcements"><p class="text-mu" style="text-align:center;padding:20px;font-size:13px">กำลังโหลด...</p></div></div>
       </div>
 
-      <!-- ADMIN: REPORT -->
+      <!-- ADMIN: REPORT      <!-- ADMIN: REPORT -->
       <div id="p-admin-rep" class="pane">
         <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">🏆</div><div><div class="ph-h1">ผลงานนิติ</div><div class="ph-sub">รายงานประจำเดือน</div></div></div><div class="ph-acts"><button class="btn btn-ghost btn-sm" onclick="openM('m-newrep')">+ เพิ่มรายงาน</button></div></div></div>
-        <div class="g2">
-          <div class="card"><div class="ch"><div class="ch-ico">🏆</div><div class="ct">มีนาคม 2568</div></div><div class="cb">
-            <div class="ann"><div class="ann-dot ad-evt"></div><div><div class="ann-t">ซ่อมแซมถนนทางเข้า</div><div class="ann-b">งบ ฿25,000 · เสร็จสมบูรณ์</div></div></div>
-            <div class="ann"><div class="ann-dot ad-gen"></div><div><div class="ann-t">ทาสีรั้วโครงการ</div><div class="ann-b">งบ ฿18,500 · อยู่ระหว่างดำเนิน</div></div></div>
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px">
-              <div style="aspect-ratio:1;background:var(--bg2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px">🖼️</div>
-              <div style="aspect-ratio:1;background:var(--bg2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px">🖼️</div>
-              <div style="aspect-ratio:1;background:var(--bg2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px">🖼️</div>
-              <div style="aspect-ratio:1;background:var(--bg2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--mu)">+5</div>
-            </div>
-          </div></div>
-          <div class="card"><div class="ch"><div class="ch-ico">📊</div><div class="ct">สรุปปีนี้ 2568</div></div><div class="cb">
-            <div class="fee-row"><div class="fee-lbl">งาน ที่ดำเนินการ</div><div class="fee-val">24 รายการ</div></div>
-            <div class="fee-row"><div class="fee-lbl">งบที่ใช้</div><div class="fee-val">฿284,500</div></div>
-            <div class="fee-row"><div class="fee-lbl">คะแนนความพึงพอใจ</div><div class="fee-val">⭐ 4.6/5</div></div>
-          </div></div>
-        </div>
+        <div id="list-reports" class="g2"><p class="text-mu" style="text-align:center;padding:20px;font-size:13px;grid-column:1/-1">กำลังโหลด...</p></div>
       </div>
 
-      <!-- ADMIN: CONTRACTOR -->
+      <!-- ADMIN: CONTRACTOR      <!-- ADMIN: CONTRACTOR -->
       <div id="p-admin-contractor" class="pane">
         <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">🔨</div><div><div class="ph-h1">ทะเบียนช่าง</div><div class="ph-sub">จัดการข้อมูลช่างและผู้รับเหมา</div></div></div><div class="ph-acts"><button class="btn btn-ghost btn-sm" onclick="openM('m-newcon')">+ เพิ่มช่าง</button></div></div></div>
-        <div class="tabs">
-          <button class="tab on" onclick="stab('acon','approved',this)">✅ อนุมัติแล้ว</button>
-          <button class="tab" onclick="stab('acon','pending',this)">⏳ รออนุมัติ (2)</button>
-        </div>
-        <div id="acon-approved" class="pane on"><div class="g2" id="list-contractors-approved">
-          <div class="g2">
-            <div class="con-card" onclick="openM('m-condetail')">
-              <div class="con-head">
-                <div class="con-av">🔧</div>
-                <div><div class="con-name">สมศักดิ์ ช่างไฟ</div><div class="con-phone">📞 081-111-2222</div></div>
-                <span class="bd b-ok" style="margin-left:auto;align-self:flex-start">✓ อนุมัติ</span>
-              </div>
-              <div class="con-body">
-                <div class="con-tags">
-                  <span class="con-tag">ช่างไฟ</span><span class="con-tag">ไฟฟ้า</span><span class="con-tag">วงจรไฟ</span>
-                </div>
-                <div class="con-rating">⭐ 4.8 · 12 รีวิว · 📍 พระนครศรีอยุธยา</div>
-              </div>
-            </div>
-            <div class="con-card" onclick="openM('m-condetail')">
-              <div class="con-head">
-                <div class="con-av">❄️</div>
-                <div><div class="con-name">แอร์ดี เซอร์วิส</div><div class="con-phone">📞 089-333-4444</div></div>
-                <span class="bd b-ok" style="margin-left:auto;align-self:flex-start">✓ อนุมัติ</span>
-              </div>
-              <div class="con-body">
-                <div class="con-tags">
-                  <span class="con-tag">ล้างแอร์</span><span class="con-tag">ติดตั้งแอร์</span><span class="con-tag">ซ่อมแอร์</span>
-                </div>
-                <div class="con-rating">⭐ 4.7 · 28 รีวิว · 📍 กรุงเทพฯ</div>
-              </div>
-            </div>
-            <div class="con-card" onclick="openM('m-condetail')">
-              <div class="con-head">
-                <div class="con-av">💧</div>
-                <div><div class="con-name">ประปาด่วน</div><div class="con-phone">📞 095-555-6666</div></div>
-                <span class="bd b-ok" style="margin-left:auto;align-self:flex-start">✓ อนุมัติ</span>
-              </div>
-              <div class="con-body">
-                <div class="con-tags">
-                  <span class="con-tag">ช่างประปา</span><span class="con-tag">ซ่อมปั๊มน้ำ</span><span class="con-tag">ท่อน้ำรั่ว</span>
-                </div>
-                <div class="con-rating">⭐ 4.5 · 18 รีวิว · 📍 นนทบุรี</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="acon-pending" class="pane"><div id="list-contractors-pending">
-          <div class="iss mb-12"><div class="iss-h"><span class="iss-t">ช่างต่อเติม วรพล</span><span class="bd b-wn">รออนุมัติ</span></div><div class="iss-m">แนะนำโดย: บ้าน 10/1 · ความสามารถ: ต่อเติม ฝ้า พื้น</div><div style="margin-top:9px;display:flex;gap:7px"><button class="btn btn-xs btn-d" onclick="sw('reject')">✗ ปฏิเสธ</button><button class="btn btn-xs btn-a" onclick="sw('approve')">✓ อนุมัติ</button></div></div>
-        </div>
+        <div class="tabs"><button class="tab on" onclick="stab('acon','approved',this)">✅ อนุมัติแล้ว</button><button class="tab" id="tab-con-pending" onclick="stab('acon','pending',this)">⏳ รออนุมัติ</button></div>
+        <div id="acon-approved" class="pane on"><div class="g2" id="list-contractors-approved"><p class="text-mu" style="text-align:center;padding:20px;font-size:13px;grid-column:1/-1">กำลังโหลด...</p></div></div>
+        <div id="acon-pending" class="pane"><div id="list-contractors-pending"><p class="text-mu" style="text-align:center;padding:20px;font-size:13px">กำลังโหลด...</p></div></div>
       </div>
 
-      <!-- ADMIN: MARKET -->
+      <!-- ADMIN: MARKET      <!-- ADMIN: MARKET -->
       <div id="p-admin-market" class="pane">
-        <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">🛒</div><div><div class="ph-h1">ประกาศขาย-ให้ฟรี</div><div class="ph-sub">รออนุมัติ 3 รายการ</div></div></div></div></div>
-        <div class="tabs">
-          <button class="tab on" onclick="stab('amk','pending',this)">⏳ รออนุมัติ (3)</button>
-          <button class="tab" onclick="stab('amk','active',this)">✅ เปิดประกาศ</button>
-          <button class="tab" onclick="stab('amk','closed',this)">🔴 ปิดแล้ว</button>
-        </div>
-        <div id="amk-pending" class="pane on"><div id="list-market-pending">
-          <div class="iss mb-12">
-            <div class="iss-h"><span class="iss-t">ขายโซฟา 3 ที่นั่ง สภาพดี</span><span class="bd b-wn">รออนุมัติ</span></div>
-            <div class="iss-m">บ้าน 10/1 · ราคา ฿3,500 · ประเภท: เฟอร์นิเจอร์</div>
-            <div style="margin-top:9px;display:flex;gap:7px"><button class="btn btn-xs btn-d" onclick="sw('reject')">✗ ปฏิเสธ</button><button class="btn btn-xs btn-a" onclick="sw('approve')">✓ อนุมัติ</button></div>
-          </div>
-          <div class="iss mb-12">
-            <div class="iss-h"><span class="iss-t">ให้ฟรี ต้นไม้หน้าบ้าน</span><span class="bd b-wn">รออนุมัติ</span></div>
-            <div class="iss-m">บ้าน 22/7 · ฟรี · ประเภท: อื่นๆ</div>
-            <div style="margin-top:9px;display:flex;gap:7px"><button class="btn btn-xs btn-d" onclick="sw('reject')">✗ ปฏิเสธ</button><button class="btn btn-xs btn-a" onclick="sw('approve')">✓ อนุมัติ</button></div>
-          </div>
-        </div>
-        <div id="amk-active" class="pane"><div id="list-market-active">
-          <div class="g2" style="grid-template-columns:repeat(2,1fr)">
-            <div class="mk-card"><div class="mk-img">🛋️<span class="mk-img-badge" style="background:#E8F5E9;color:#2E7D32">ขาย</span></div><div class="mk-body"><div class="mk-title">โซฟา L-Shape</div><div class="mk-price">฿8,500</div><div class="mk-meta">บ้าน 5/3 · 2 วันที่แล้ว</div></div></div>
-            <div class="mk-card"><div class="mk-img">🏠<span class="mk-img-badge" style="background:#E3F2FD;color:#1565C0">เช่า</span></div><div class="mk-body"><div class="mk-title">ให้เช่าบ้าน 2 ชั้น</div><div class="mk-price">฿15,000/เดือน</div><div class="mk-meta">บ้าน 31/2 · เมื่อวาน</div></div></div>
-          </div>
-        </div>
-        <div id="amk-closed" class="pane"><div class="empty-state"><div class="es-ico">📭</div><div class="es-t">ไม่มีรายการที่ปิดแล้ว</div></div></div>
+        <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">🛒</div><div><div class="ph-h1">ประกาศขาย-ให้ฟรี</div><div class="ph-sub" id="mkt-sub">จัดการประกาศ</div></div></div></div></div>
+        <div class="tabs"><button class="tab on" id="tab-amk-pending" onclick="stab('amk','pending',this)">⏳ รออนุมัติ</button><button class="tab" onclick="stab('amk','active',this)">✅ เปิดประกาศ</button><button class="tab" onclick="stab('amk','closed',this)">🔴 ปิดแล้ว</button></div>
+        <div id="amk-pending" class="pane on"><div id="list-market-pending"><p class="text-mu" style="text-align:center;padding:20px;font-size:13px">กำลังโหลด...</p></div></div>
+        <div id="amk-active" class="pane"><div id="list-market-active"><p class="text-mu" style="text-align:center;padding:20px;font-size:13px">กำลังโหลด...</p></div></div>
+        <div id="amk-closed" class="pane"><div id="list-market-closed"><p class="text-mu" style="text-align:center;padding:20px;font-size:13px">ไม่มีรายการที่ปิดแล้ว</p></div></div>
       </div>
 
-      <!-- ADMIN: USERS -->
+      <!-- ADMIN: USERS      <!-- ADMIN: USERS -->
       <div id="p-admin-usr" class="pane">
-        <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">👥</div><div><div class="ph-h1">สมาชิก</div><div class="ph-sub">จัดการบัญชีผู้ใช้งาน</div></div></div><div class="ph-acts"><button class="btn btn-ghost btn-sm" onclick="sw('adduser')">+ เพิ่มสมาชิก</button></div></div></div>
+        <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">👥</div><div><div class="ph-h1">สมาชิก</div><div class="ph-sub">จัดการบัญชีผู้ใช้งาน</div></div></div><div class="ph-acts"><button class="btn btn-ghost btn-sm" onclick="openM('m-adduser')">+ เพิ่มสมาชิก</button></div></div></div>
         <div class="card"><div class="ch"><div class="ch-ico">👥</div><div class="ct">รายชื่อสมาชิก</div></div>
           <div class="tw"><table><thead><tr><th>ID</th><th>Username</th><th>บ้าน</th><th>Role</th><th>สถานะ</th></tr></thead><tbody id="tbl-users">
             <tr><td colspan="5" class="text-mu" style="text-align:center;padding:20px">กำลังโหลด...</td></tr>
@@ -1573,11 +1434,11 @@ tr:hover td{background:var(--bg)}
         <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">💳</div><div><div class="ph-h1">ค่าส่วนกลาง</div><div class="ph-sub">ประวัติใบแจ้งหนี้และการชำระ</div></div></div></div></div>
         <div class="fee-hero"><div class="fhi">
           <div class="f-lbl">ยอดค้างชำระปัจจุบัน</div>
-          <div class="f-amt" id="res-fee-amount">฿2,750</div>
+          <div class="f-amt" id="res-fee-amount">—</div>
           <div class="f-per"><span id="res-fee-period">—</span></div>
           <div class="f-btns">
             <button class="btn btn-ghost btn-sm" onclick="openM('m-pay')">💳 แจ้งชำระ</button>
-            <button class="btn btn-ghost btn-sm" onclick="sw('print')">🖨️ พิมพ์ใบแจ้งหนี้</button>
+            <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨️ พิมพ์ใบแจ้งหนี้</button>
           </div>
         </div></div>
 
@@ -1660,37 +1521,18 @@ tr:hover td{background:var(--bg)}
 
       <!-- RES: ISSUE -->
       <div id="p-res-issue" class="pane">
-        <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">🔧</div><div><div class="ph-h1">แจ้งปัญหา</div><div class="ph-sub">ติดตามสถานะปัญหา</div></div></div><div class="ph-acts"><button class="btn btn-ghost btn-sm" onclick="openM('m-newissue')">+ แจ้งปัญหาใหม่</button></div></div></div>
-        <div class="card">
-          <div class="ch"><div class="ch-ico">🔧</div><div class="ct">ปัญหาที่แจ้ง</div></div>
-          <div class="cb">
-            <div class="iss">
-              <div class="iss-h"><span class="iss-t">ไฟถนนดับหน้าบ้าน</span><span class="bd b-wn">กำลังดำเนิน</span></div>
-              <div class="iss-m">📅 แจ้งเมื่อ 14 มี.ค. 2568 · 📸 3 รูป</div>
-              <div class="iss-m" style="margin-top:4px">💬 นิติ: ประสานช่างแล้ว คาดเสร็จ 18 มี.ค.</div>
-              <div class="tl" style="margin-top:13px">
-                <div class="tli"><div class="tld td-done"></div><div class="tl-l" style="font-size:12px">รับเรื่อง</div><div class="tl-s">14 มี.ค.</div></div>
-                <div class="tli"><div class="tld td-active"></div><div class="tl-l" style="font-size:12px">กำลังดำเนิน</div><div class="tl-s">15 มี.ค.</div></div>
-                <div class="tli"><div class="tld td-pend"></div><div class="tl-l" style="font-size:12px;color:var(--mu)">เสร็จสิ้น</div></div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">🔧</div><div><div class="ph-h1">แจ้งปัญหา</div><div class="ph-sub">ปัญหาที่แจ้งไว้</div></div></div><div class="ph-acts"><button class="btn btn-ghost btn-sm" onclick="openM('m-newissue')">+ แจ้งปัญหา</button></div></div></div>
+        <div class="card"><div class="ch"><div class="ch-ico">🔧</div><div class="ct">ปัญหาที่แจ้ง</div></div><div class="cb" id="list-my-issues"><p class="text-mu" style="text-align:center;padding:20px;font-size:13px">กำลังโหลด...</p></div></div>
       </div>
 
-      <!-- RES: NOTIF (การแจ้งเตือนจากนิติ) -->
+      <!-- RES: NOTIF      <!-- RES: NOTIF (การแจ้งเตือนจากนิติ) -->
       <div id="p-res-notif" class="pane">
-        <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">⚠️</div><div><div class="ph-h1">การแจ้งเตือนจากนิติ</div><div class="ph-sub">บ้าน 10/1 · ซอย 3</div></div></div></div></div>
+        <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">🔔</div><div><div class="ph-h1">การแจ้งเตือน</div><div class="ph-sub">ประกาศจากนิติ</div></div></div></div></div>
         <div id="list-my-notifs"><p class="text-mu" style="font-size:13px;text-align:center;padding:20px">กำลังโหลด...</p></div>
-        <div class="card">
-          <div class="ch"><div class="ch-ico">📋</div><div class="ct">ประวัติการแจ้งเตือน</div></div>
-          <div class="cb">
-            <div class="iss"><div class="iss-h"><span class="iss-t">เผาขยะผิดที่</span><span class="bd b-ok">แก้ไขแล้ว</span></div><div class="iss-m">✓ แก้ไขเมื่อ 12 มี.ค. 2568</div></div>
-          </div>
-        </div>
+        <div class="card"><div class="ch"><div class="ch-ico">📋</div><div class="ct">ประวัติการแจ้งเตือน</div></div><div class="cb" id="list-my-violations"><p class="text-mu" style="text-align:center;padding:16px;font-size:13px">กำลังโหลด...</p></div></div>
       </div>
 
-      <!-- RES: NEWS -->
+      <!-- RES: NEWS      <!-- RES: NEWS -->
       <div id="p-res-news" class="pane">
         <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">📢</div><div><div class="ph-h1">ประกาศ</div><div class="ph-sub">ข่าวสารจากนิติบุคคล</div></div></div></div></div>
         <div class="card"><div class="ch"><div class="ch-ico">📢</div><div class="ct">ประกาศทั้งหมด</div></div><div class="cb" id="list-announcements">
@@ -1701,31 +1543,10 @@ tr:hover td{background:var(--bg)}
       <!-- RES: WORK -->
       <div id="p-res-work" class="pane">
         <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">🏆</div><div><div class="ph-h1">ผลงานนิติ</div><div class="ph-sub">รายงานประจำเดือน</div></div></div></div></div>
-        <div class="card"><div class="ch"><div class="ch-ico">🏆</div><div class="ct">มีนาคม 2568</div></div><div class="cb">
-          <div class="ann"><div class="ann-dot ad-evt"></div><div><div class="ann-t">ซ่อมแซมถนนทางเข้า</div><div class="ann-b">งบประมาณ ฿25,000 · เสร็จสมบูรณ์</div></div></div>
-          <div class="ann"><div class="ann-dot ad-gen"></div><div><div class="ann-t">ทาสีรั้วโครงการ</div><div class="ann-b">งบประมาณ ฿18,500 · อยู่ระหว่างดำเนิน</div></div></div>
-          <div style="margin-top:12px">
-            <div style="font-size:10.5px;font-weight:700;color:var(--mu);margin-bottom:8px">ภาพประกอบ</div>
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px">
-              <div style="aspect-ratio:1;background:var(--bg2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:24px">🖼️</div>
-              <div style="aspect-ratio:1;background:var(--bg2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:24px">🖼️</div>
-              <div style="aspect-ratio:1;background:var(--bg2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:24px">🖼️</div>
-              <div style="aspect-ratio:1;background:var(--bg2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:var(--mu)">+5</div>
-            </div>
-          </div>
-          <div class="divider"></div>
-          <div class="sl">ให้คะแนนการทำงาน</div>
-          <div class="sr" style="justify-content:center">
-            <div class="s on" onclick="rateStar(this,1)">★</div>
-            <div class="s on" onclick="rateStar(this,2)">★</div>
-            <div class="s on" onclick="rateStar(this,3)">★</div>
-            <div class="s on" onclick="rateStar(this,4)">★</div>
-            <div class="s" onclick="rateStar(this,5)">★</div>
-          </div>
-        </div></div>
+        <div id="list-res-reports"><p class="text-mu" style="text-align:center;padding:20px;font-size:13px">กำลังโหลด...</p></div>
       </div>
 
-      <!-- RES: CONTRACTOR -->
+      <!-- RES: CONTRACTOR      <!-- RES: CONTRACTOR -->
       <div id="p-res-contractor" class="pane">
         <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">🔨</div><div><div class="ph-h1">ทะเบียนช่าง</div><div class="ph-sub">ช่างที่แนะนำโดยนิติและลูกบ้าน</div></div></div><div class="ph-acts"><button class="btn btn-ghost btn-sm" onclick="openM('m-suggestcon')">+ แนะนำช่าง</button></div></div></div>
         <div class="search-bar"><span>🔍</span><input type="text" placeholder="ค้นหาช่าง เช่น แอร์ ประปา ไฟฟ้า..."></div>
@@ -1737,41 +1558,7 @@ tr:hover td{background:var(--bg)}
           <button class="btn btn-xs btn-o">🏗️ ต่อเติม</button>
           <button class="btn btn-xs btn-o">🔐 ล็อค/เปลี่ยน</button>
         </div>
-        <div class="g2">
-          <div class="con-card" onclick="openM('m-condetail')">
-            <div class="con-head">
-              <div class="con-av">🔧</div>
-              <div><div class="con-name">สมศักดิ์ ช่างไฟ</div><div class="con-phone">📞 081-111-2222</div></div>
-              <span class="bd b-ok" style="margin-left:auto;align-self:flex-start;font-size:10px">✓ นิติรับรอง</span>
-            </div>
-            <div class="con-body">
-              <div class="con-tags"><span class="con-tag">ช่างไฟ</span><span class="con-tag">ไฟฟ้า</span><span class="con-tag">วงจรไฟ</span></div>
-              <div class="con-rating">⭐ 4.8 · 12 รีวิว · 📍 ใกล้โครงการ</div>
-            </div>
-          </div>
-          <div class="con-card" onclick="openM('m-condetail')">
-            <div class="con-head">
-              <div class="con-av">❄️</div>
-              <div><div class="con-name">แอร์ดี เซอร์วิส</div><div class="con-phone">📞 089-333-4444</div></div>
-              <span class="bd b-ok" style="margin-left:auto;align-self:flex-start;font-size:10px">✓ นิติรับรอง</span>
-            </div>
-            <div class="con-body">
-              <div class="con-tags"><span class="con-tag">ล้างแอร์</span><span class="con-tag">ติดตั้งแอร์</span><span class="con-tag">ซ่อมแอร์</span></div>
-              <div class="con-rating">⭐ 4.7 · 28 รีวิว · 📍 ใกล้โครงการ</div>
-            </div>
-          </div>
-          <div class="con-card" onclick="openM('m-condetail')">
-            <div class="con-head">
-              <div class="con-av">💧</div>
-              <div><div class="con-name">ประปาด่วน</div><div class="con-phone">📞 095-555-6666</div></div>
-              <span class="bd b-ok" style="margin-left:auto;align-self:flex-start;font-size:10px">✓ นิติรับรอง</span>
-            </div>
-            <div class="con-body">
-              <div class="con-tags"><span class="con-tag">ช่างประปา</span><span class="con-tag">ซ่อมปั๊มน้ำ</span><span class="con-tag">ท่อรั่ว</span></div>
-              <div class="con-rating">⭐ 4.5 · 18 รีวิว · 📍 ใกล้โครงการ</div>
-            </div>
-          </div>
-        </div>
+        <div class="g2" id="list-contractors-res"><p class="text-mu" style="text-align:center;padding:20px;font-size:13px;grid-column:1/-1">กำลังโหลด...</p></div>
       </div>
 
       <!-- RES: MARKET -->
@@ -1830,9 +1617,9 @@ tr:hover td{background:var(--bg)}
             <div class="fg"><label class="fl">Username</label><input class="fi" id="prof-username" value="" disabled></div>
             <div class="fg"><label class="fl">บ้านเลขที่</label><input class="fi" id="prof-houseid" value="" disabled></div>
           </div>
-          <div class="fg"><label class="fl">เบอร์โทร</label><input class="fi" id="edit-phone" value="081-234-5678"></div>
-          <div class="fg"><label class="fl">อีเมล</label><input class="fi" id="edit-email" value="somchai@email.com"></div>
-          <button class="btn btn-p btn-full" onclick="sw('save')">💾 บันทึกข้อมูล</button>
+          <div class="fg"><label class="fl">เบอร์โทร</label><input class="fi" id="edithouse-phone"></div>
+          <div class="fg"><label class="fl">อีเมล</label><input class="fi" id="edithouse-email"></div>
+          <button class="btn btn-p btn-full" onclick="doSaveResProfile()">💾 บันทึกข้อมูล</button>
         </div></div>
         <div class="card"><div class="ch"><div class="ch-ico">🔒</div><div class="ct">เปลี่ยนรหัสผ่าน</div></div><div class="cb">
           <div class="fg"><label class="fl">รหัสผ่านปัจจุบัน</label><input class="fi" type="password"></div>
@@ -1880,7 +1667,7 @@ tr:hover td{background:var(--bg)}
     <div class="fg"><label class="fl">เบอร์โทรศัพท์ ✏️</label><input class="fi" id="edit-phone" value="081-234-5678"></div>
     <div class="fg"><label class="fl">อีเมล ✏️</label><input class="fi" id="edit-email" value="somchai@email.com"></div>
     <div class="fg"><label class="fl">ประเภทการใช้ ✏️</label>
-      <select class="fs"><option>อยู่เอง</option><option>ให้เช่า</option><option>ว่าง</option></select>
+      <select class="fs" id="edithouse-usage"><option value="owner">อยู่เอง</option><option value="rent">ให้เช่า</option><option value="vacant">ว่าง</option></select>
     </div>
     <div class="fg"><label class="fl">หมายเหตุ (ถึงนิติ)</label><textarea class="ft" id="edit-note" placeholder="ระบุเหตุผลในการแก้ไข..."></textarea></div>
   </div>
@@ -2048,23 +1835,24 @@ tr:hover td{background:var(--bg)}
   <div class="md-handle"></div>
   <div class="md-hd">
     <div class="md-hd-ico">💰</div>
-    <div><div class="md-title">รายละเอียดใบแจ้งหนี้</div><div class="md-sub">บ้าน 10/1 · H1/2568</div></div>
+    <div><div class="md-title">รายละเอียดใบแจ้งหนี้</div><div class="md-sub" id="fd-sub">—</div></div>
     <button class="md-x" onclick="closeM('m-fee-detail')">✕</button>
   </div>
   <div class="md-bd">
-    <div class="fee-row"><div class="fee-lbl">ค่าส่วนกลาง</div><div class="fee-val">฿2,250</div></div>
-    <div class="fee-row"><div class="fee-lbl">ค่าจอดรถ</div><div class="fee-val">฿300</div></div>
-    <div class="fee-row"><div class="fee-lbl">ค่าเก็บขยะ</div><div class="fee-val">฿200</div></div>
-    <div class="fee-row"><div class="fee-lbl">ยอดค้างจากงวดก่อน</div><div class="fee-val">฿0</div></div>
-    <div class="fee-row"><div class="fee-lbl text-dg">ค่าปรับ 10%</div><div class="fee-val text-dg">฿0</div></div>
-    <div class="fee-row"><div class="fee-lbl text-dg">ค่าทวงถาม</div><div class="fee-val text-dg">฿0</div></div>
-    <div class="fee-row"><div class="fee-lbl text-dg">ค่ากระทำผิด</div><div class="fee-val text-dg">฿0</div></div>
-    <div class="fee-row"><div class="fee-lbl text-ok">ส่วนลด</div><div class="fee-val text-ok">-฿0</div></div>
-    <div class="fee-row tot"><div class="fee-lbl">รวมทั้งหมด</div><div class="fee-val">฿2,750</div></div>
+    <div class="fee-row"><div class="fee-lbl">ค่าส่วนกลาง</div><div class="fee-val" id="fd-fee-amount">—</div></div>
+    <div class="fee-row"><div class="fee-lbl">ค่าจอดรถ</div><div class="fee-val" id="fd-parking">—</div></div>
+    <div class="fee-row"><div class="fee-lbl">ค่าเก็บขยะ</div><div class="fee-val" id="fd-trash">—</div></div>
+    <div class="fee-row"><div class="fee-lbl">ยอดค้างจากงวดก่อน</div><div class="fee-val" id="fd-carry">—</div></div>
+    <div class="fee-row"><div class="fee-lbl text-dg">ค่าปรับ 10%</div><div class="fee-val text-dg" id="fd-penalty10">—</div></div>
+    <div class="fee-row"><div class="fee-lbl text-dg">ค่าทวงถาม</div><div class="fee-val text-dg" id="fd-collection">—</div></div>
+    <div class="fee-row"><div class="fee-lbl text-dg">ค่ากระทำผิด</div><div class="fee-val text-dg" id="fd-penalty">—</div></div>
+    <div class="fee-row"><div class="fee-lbl text-ok">ส่วนลด</div><div class="fee-val text-ok" id="fd-discount">—</div></div>
+    <div class="fee-row tot"><div class="fee-lbl">รวมทั้งหมด</div><div class="fee-val" id="fd-total">—</div></div>
+    <div id="fd-slip-section" style="display:none;margin-top:12px"><div class="fee-row"><div class="fee-lbl">สลิปโอน</div><div class="fee-val"><a id="fd-slip-link" href="#" target="_blank">ดูสลิป</a></div></div></div>
   </div>
   <div class="md-ft">
     <button class="btn btn-g btn-sm" onclick="closeM('m-fee-detail')">ปิด</button>
-    <button class="btn btn-p btn-sm" onclick="sw('approve');closeM('m-fee-detail')">✓ Approve</button>
+    <button class="btn btn-p btn-sm" id="btn-fee-approve" onclick="doApproveSlipFromModal()">✓ Approve</button>
   </div>
 </div></div>
 
@@ -2077,10 +1865,10 @@ tr:hover td{background:var(--bg)}
     <div><div class="md-title">แก้ไขข้อมูลบ้าน</div><div class="md-sub" id="edithouse-sub">Admin Mode</div></div>
     <button class="md-x" onclick="closeM('m-admin-edithouse')">✕</button>
   </div>
-  <input type="hidden" id="edithouse-id">
   <div class="md-bd">
     <div class="sl">📍 ที่อยู่</div>
     <div class="fr3">
+      <input type="hidden" id="edithouse-id">
       <div class="fg"><label class="fl">บ้านเลขที่</label><input class="fi" id="edithouse-no"></div>
       <div class="fg"><label class="fl">ซอย</label><input class="fi" id="edithouse-soi"></div>
       <div class="fg"><label class="fl">พื้นที่ (ตร.ว.)</label><input class="fi" id="edithouse-area" type="number"></div>
@@ -2091,8 +1879,8 @@ tr:hover td{background:var(--bg)}
       <div class="fg"><label class="fl">ผู้เช่า</label><input class="fi" id="edithouse-renter" placeholder="(ไม่มี)"></div>
     </div>
     <div class="fr2">
-      <div class="fg"><label class="fl">เบอร์โทร</label><input class="fi" id="edithouse-phone"></div>
-      <div class="fg"><label class="fl">อีเมล</label><input class="fi" id="edithouse-email"></div>
+      <div class="fg"><label class="fl">เบอร์โทร</label><input class="fi" id="edit-phone" value="081-234-5678"></div>
+      <div class="fg"><label class="fl">อีเมล</label><input class="fi" id="edit-email" value="somchai@email.com"></div>
     </div>
     <div class="sl">💰 ค่าธรรมเนียม</div>
     <div class="fr3">
@@ -2101,23 +1889,13 @@ tr:hover td{background:var(--bg)}
       <div class="fg"><label class="fl">ค่าขยะ/งวด</label><input class="fi" id="edithouse-trash" type="number"></div>
     </div>
     <div class="fr2">
-      <div class="fg"><label class="fl">ประเภทการใช้</label>
-        <select class="fs" id="edithouse-usage">
-          <option value="owner">อยู่เอง</option>
-          <option value="rent">ให้เช่า</option>
-          <option value="vacant">ว่าง</option>
-        </select>
+      <div class="fg"><label class="fl">ประเภทบ้าน</label>
+        <select class="fs"><option>อยู่เอง</option><option>ให้เช่า</option><option>ว่าง</option></select>
       </div>
       <div class="fg"><label class="fl">สถานะ</label>
-        <select class="fs" id="edithouse-status">
-          <option value="normal">ปกติ</option>
-          <option value="overdue">ค้างชำระ</option>
-          <option value="suspended">ระงับกรมที่ดิน</option>
-          <option value="legal">ฟ้องร้อง</option>
-        </select>
+        <select class="fs" id="edithouse-status"><option value="normal">ปกติ</option><option value="overdue">ค้างชำระ</option><option value="suspended">ระงับกรมที่ดิน</option><option value="legal">ฟ้องร้อง</option></select>
       </div>
     </div>
-    <div class="fg"><label class="fl">หมายเหตุสถานะ</label><input class="fi" id="edithouse-statusnote" placeholder="(ถ้ามี)"></div>
   </div>
   <div class="md-ft">
     <button class="btn btn-g btn-sm" onclick="closeM('m-admin-edithouse')">ยกเลิก</button>
@@ -2136,14 +1914,14 @@ tr:hover td{background:var(--bg)}
   </div>
   <div class="md-bd">
     <div class="fr2">
-      <div class="fg"><label class="fl">ชื่อ-นามสกุล/ชื่อร้าน</label><input class="fi" placeholder="เช่น สมศักดิ์ ช่างไฟ"></div>
-      <div class="fg"><label class="fl">เบอร์โทรศัพท์</label><input class="fi" placeholder="08X-XXX-XXXX"></div>
+      <div class="fg"><label class="fl">ชื่อ-นามสกุล/ชื่อร้าน</label><input class="fi" id="newcon-name" placeholder="เช่น สมศักดิ์ ช่างไฟ"></div>
+      <div class="fg"><label class="fl">เบอร์โทรศัพท์</label><input class="fi" id="newcon-phone" placeholder="08X-XXX-XXXX"></div>
     </div>
-    <div class="fg"><label class="fl">Line ID / ช่องทางติดต่อ</label><input class="fi" placeholder="@username"></div>
-    <div class="fg"><label class="fl">ที่อยู่/พื้นที่ให้บริการ</label><input class="fi" placeholder="เช่น นนทบุรี กรุงเทพฯ"></div>
+    <div class="fg"><label class="fl">Line ID / ช่องทางติดต่อ</label><input class="fi" id="newcon-lineid" placeholder="@username"></div>
+    <div class="fg"><label class="fl">ที่อยู่/พื้นที่ให้บริการ</label><input class="fi" id="newcon-area" placeholder="เช่น นนทบุรี กรุงเทพฯ"></div>
     <div class="fg">
       <label class="fl">ความสามารถ (เลือกได้หลายข้อ)</label>
-      <div class="fcb">
+      <div class="fcb" id="newcon-skills-container">
         <label class="fcb-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('on',this.checked)">❄️ ล้างแอร์</label>
         <label class="fcb-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('on',this.checked)">❄️ ติดตั้งแอร์</label>
         <label class="fcb-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('on',this.checked)">❄️ ซ่อมแอร์</label>
@@ -2158,11 +1936,11 @@ tr:hover td{background:var(--bg)}
         <label class="fcb-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('on',this.checked)">🏠 ฝ้า/พื้น</label>
       </div>
     </div>
-    <div class="fg"><label class="fl">หมายเหตุ</label><textarea class="ft" placeholder="ข้อมูลเพิ่มเติม..."></textarea></div>
+    <div class="fg"><label class="fl">หมายเหตุ</label><textarea class="ft" id="newcon-bio" placeholder="ข้อมูลเพิ่มเติม..."></textarea></div>
   </div>
   <div class="md-ft">
     <button class="btn btn-g btn-sm" onclick="closeM('m-newcon')">ยกเลิก</button>
-    <button class="btn btn-p btn-sm" onclick="sw('save');closeM('m-newcon')">💾 บันทึกช่าง</button>
+    <button class="btn btn-p btn-sm" onclick="doCreateContractor()">💾 บันทึกช่าง</button>
   </div>
 </div></div>
 
@@ -2203,9 +1981,21 @@ tr:hover td{background:var(--bg)}
 <div class="mo" id="m-condetail" onclick="omOut(event,'m-condetail')">
 <div class="md">
   <div class="md-handle"></div>
-  <div class="md-hd">
-    <div class="md-hd-ico">🔧</div>
-    <div><div class="md-title">สมศักดิ์ ช่างไฟ</div><div class="md-sub">⭐ 4.8 · 12 รีวิว</div></div>
+  <div class="md-hd"><div class="md-hd-ico">🔧</div><div><div class="md-title" id="cd-name">รายละเอียดช่าง</div><div class="md-sub" id="cd-rating">—</div></div><button class="md-x" onclick="closeM('m-condetail')">✕</button></div>
+  <div class="md-bd">
+    <div class="ig" style="margin-bottom:14px">
+      <div class="ii"><div class="ik">เบอร์โทร</div><div class="iv" id="cd-phone">—</div></div>
+      <div class="ii"><div class="ik">Line</div><div class="iv" id="cd-line">—</div></div>
+      <div class="ii"><div class="ik">พื้นที่</div><div class="iv" id="cd-area">—</div></div>
+      <div class="ii"><div class="ik">สถานะ</div><div class="iv"><span class="bd b-ok" id="cd-status">—</span></div></div>
+    </div>
+    <div class="sl">ความสามารถ</div>
+    <div class="con-tags" id="cd-skills" style="margin-bottom:14px">—</div>
+    <div class="sl">หมายเหตุ</div>
+    <p id="cd-bio" style="font-size:13px;color:var(--mu);margin-bottom:14px">—</p>
+  </div>
+  <div class="md-ft"><button class="btn btn-g btn-sm" onclick="closeM('m-condetail')">ปิด</button><a id="cd-tel-link" href="#" class="btn btn-p btn-sm">📞 โทรหาช่าง</a></div>
+</div></div>
     <button class="md-x" onclick="closeM('m-condetail')">✕</button>
   </div>
   <div class="md-bd">
@@ -2547,6 +2337,13 @@ async function loadAdminDashboard() {
     const dash = await api('getDashboard');
     APP.dashboard = dash;
     // Stat cards
+    var _nm=new Date();
+    var _thM=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+    _setEl('dash-date-sub',_nm.getDate()+' '+_thM[_nm.getMonth()]+' '+(_nm.getFullYear()+543));
+    _setEl('dash-hdr-houses',dash.houses_total||'—');
+    var _nm=new Date();var _thM=['\u0e21\u0e01\u0e23\u0e32\u0e04\u0e21','\u0e01\u0e38\u0e21\u0e20\u0e32\u0e1e\u0e31\u0e19\u0e18\u0e4c','\u0e21\u0e35\u0e19\u0e32\u0e04\u0e21','\u0e40\u0e21\u0e29\u0e32\u0e22\u0e19','\u0e1e\u0e24\u0e29\u0e20\u0e32\u0e04\u0e21','\u0e21\u0e34\u0e16\u0e38\u0e19\u0e32\u0e22\u0e19','\u0e01\u0e23\u0e01\u0e0e\u0e32\u0e04\u0e21','\u0e2a\u0e34\u0e07\u0e2b\u0e32\u0e04\u0e21','\u0e01\u0e31\u0e19\u0e22\u0e32\u0e22\u0e19','\u0e15\u0e38\u0e25\u0e32\u0e04\u0e21','\u0e1e\u0e24\u0e28\u0e08\u0e34\u0e01\u0e32\u0e22\u0e19','\u0e18\u0e31\u0e19\u0e27\u0e32\u0e04\u0e21'];
+    _setEl('dash-date-sub',_nm.getDate()+' '+_thM[_nm.getMonth()]+' '+(_nm.getFullYear()+543));
+    _setEl('dash-hdr-houses',dash.houses_total||'\u2014');
     _setEl('stat-houses',   dash.houses_total);
     _setEl('stat-overdue',  dash.houses_overdue);
     _setEl('stat-slip',     dash.slips_pending);
@@ -2575,7 +2372,7 @@ async function _loadDashSlips() {
       return '<tr><td><strong>' + f.house_id + '</strong></td>' +
         '<td class="text-pr fw-7">฿' + Number(f.total||0).toLocaleString() + '</td>' +
         '<td><span class="bd b-pr">' + f.period + '/' + f.year + '</span></td>' +
-        '<td><button class="btn btn-xs btn-a" onclick="doApproveSlip(\'' + f.fee_id + '\')">✓</button></td></tr>';
+        '<td><button class="btn btn-xs btn-a" onclick="doApproveSlip('\'' + f.fee_id + '\')">✓</button></td></tr>';
     }).join('');
   } catch(e) {}
 }
@@ -2700,6 +2497,7 @@ async function loadPageData(view, page) {
     if (key === 'admin-vio')        await loadViolationsPage();
     if (key === 'admin-req')        await loadChangeReqPage();
     if (key === 'admin-ann')        await loadAnnouncementsPage();
+    if (key === 'admin-rep')        await loadReportsPage();
     if (key === 'admin-contractor') await loadContractorsPage();
     if (key === 'admin-market')     await loadMarketAdminPage();
     if (key === 'admin-usr')        await loadUsersPage();
@@ -2709,6 +2507,7 @@ async function loadPageData(view, page) {
     if (key === 'res-issue')        await loadResIssuePage();
     if (key === 'res-notif')        await loadResNotifPage();
     if (key === 'res-news')         await loadResNewsPage();
+    if (key === 'res-work')         await loadResWorkPage();
     if (key === 'res-contractor')   await loadResContractorPage();
     if (key === 'res-market')       await loadResMarketPage();
   } catch(err) {
@@ -2717,25 +2516,10 @@ async function loadPageData(view, page) {
 }
 
 // ── ADMIN: Houses ─────────────────────────────────────────────
-// Fix: Sheets auto-converts "30/9" style house_no to Date object
-function _safeHouseNo(val) {
-  if (!val && val !== 0) return '';
-  var s = String(val);
-  // ISO datetime from Sheets date conversion e.g. "2026-09-30T17:00:00.000Z"
-  if (/^\d{4}-\d{2}-\d{2}T/.test(s)) {
-    var d = new Date(s);
-    if (!isNaN(d)) return d.getDate() + '/' + (d.getMonth() + 1);
-  }
-  return s;
-}
-
-var _housesCache = [];
-
 async function loadHousesPage() {
   showLoader('\u0e42\u0e2b\u0e25\u0e14\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e1a\u0e49\u0e32\u0e19...');
   try {
     const houses = await api('getHouses');
-    _housesCache = houses;
     const tbody  = document.getElementById('tbl-houses');
     if (!tbody) return;
     tbody.innerHTML = houses.map(function(h) {
@@ -2745,9 +2529,8 @@ async function loadHousesPage() {
         suspended: '<span class="bd b-dg">\u25cf \u0e23\u0e30\u0e07\u0e31\u0e1a</span>',
         legal:     '<span class="bd b-pur">\u2696\ufe0f \u0e1f\u0e49\u0e2d\u0e07\u0e23\u0e49\u0e2d\u0e07</span>'
       }[h.status] || '<span class="bd b-mu">' + h.status + '</span>';
-      var displayNo = _safeHouseNo(h.house_no);
       return '<tr>' +
-        '<td><strong>' + displayNo + '</strong> <span class="tag">' + (h.soi||'') + '</span></td>' +
+        '<td><strong>' + h.house_no + '</strong> <span class="tag">' + (h.soi||'') + '</span></td>' +
         '<td>' + (h.owner_name||'') + '</td>' +
         '<td>' + (h.phone||'') + '</td>' +
         '<td class="text-pr fw-7">\u0e3f' + Number(h.fee_per_year||0).toLocaleString() + '</td>' +
@@ -2758,71 +2541,6 @@ async function loadHousesPage() {
   } finally { hideLoader(); }
 }
 
-async function openEditHouseModal(houseId) {
-  var h = _housesCache.find(function(x) { return x.house_id === houseId; });
-  if (!h) {
-    try { h = await api('getHouseById', { house_id: houseId }); } catch(e) {}
-  }
-  if (!h) { Swal.fire({ icon:'error', title:'\u0e44\u0e21\u0e48\u0e1e\u0e1a\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e1a\u0e49\u0e32\u0e19' }); return; }
-
-  document.getElementById('edithouse-id').value         = h.house_id;
-  document.getElementById('edithouse-no').value         = _safeHouseNo(h.house_no);
-  document.getElementById('edithouse-soi').value        = h.soi || '';
-  document.getElementById('edithouse-area').value       = h.area_sqm || '';
-  document.getElementById('edithouse-owner').value      = h.owner_name || '';
-  document.getElementById('edithouse-renter').value     = h.renter_name || '';
-  document.getElementById('edithouse-phone').value      = h.phone || '';
-  document.getElementById('edithouse-email').value      = h.email || '';
-  document.getElementById('edithouse-fee').value        = h.fee_per_year || '';
-  document.getElementById('edithouse-parking').value    = h.parking_fee_year || '';
-  document.getElementById('edithouse-trash').value      = h.trash_fee_period || '';
-  document.getElementById('edithouse-statusnote').value = h.status_note || '';
-
-  var usageSel  = document.getElementById('edithouse-usage');
-  var statusSel = document.getElementById('edithouse-status');
-  if (usageSel)  usageSel.value  = h.usage_type || 'owner';
-  if (statusSel) statusSel.value = h.status     || 'normal';
-
-  _setEl('edithouse-sub', '\u0e1a\u0e49\u0e32\u0e19 ' + _safeHouseNo(h.house_no) + ' \u00b7 Admin Mode');
-  openM('m-admin-edithouse');
-}
-
-async function doSaveEditHouse() {
-  var houseId = document.getElementById('edithouse-id').value;
-  if (!houseId) return;
-  var houseNo   = document.getElementById('edithouse-no').value.trim();
-  var ownerName = document.getElementById('edithouse-owner').value.trim();
-  if (!houseNo || !ownerName) {
-    Swal.fire({ icon:'warning', title:'\u0e01\u0e23\u0e38\u0e13\u0e32\u0e01\u0e23\u0e2d\u0e01\u0e1a\u0e49\u0e32\u0e19\u0e40\u0e25\u0e02\u0e17\u0e35\u0e48\u0e41\u0e25\u0e30\u0e0a\u0e37\u0e48\u0e2d\u0e40\u0e08\u0e49\u0e32\u0e02\u0e2d\u0e07' });
-    return;
-  }
-  showLoader('\u0e01\u0e33\u0e25\u0e31\u0e07\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01...');
-  try {
-    await api('updateHouse', {
-      house_id:         houseId,
-      house_no:         houseNo,
-      soi:              document.getElementById('edithouse-soi').value.trim(),
-      area_sqm:         Number(document.getElementById('edithouse-area').value) || 0,
-      owner_name:       ownerName,
-      renter_name:      document.getElementById('edithouse-renter').value.trim(),
-      phone:            document.getElementById('edithouse-phone').value.trim(),
-      email:            document.getElementById('edithouse-email').value.trim(),
-      fee_per_year:     Number(document.getElementById('edithouse-fee').value) || 0,
-      parking_fee_year: Number(document.getElementById('edithouse-parking').value) || 0,
-      trash_fee_period: Number(document.getElementById('edithouse-trash').value) || 0,
-      usage_type:       document.getElementById('edithouse-usage').value,
-      status:           document.getElementById('edithouse-status').value,
-      status_note:      document.getElementById('edithouse-statusnote').value.trim(),
-    });
-    closeM('m-admin-edithouse');
-    await loadHousesPage();
-    Swal.fire({ icon:'success', title:'\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e40\u0e23\u0e35\u0e22\u0e1a\u0e23\u0e49\u0e2d\u0e22', timer:1500, showConfirmButton:false });
-  } catch(err) {
-    Swal.fire({ icon:'error', title:'\u0e40\u0e01\u0e34\u0e14\u0e02\u0e49\u0e2d\u0e1c\u0e34\u0e14\u0e1e\u0e25\u0e32\u0e14', text: err.message });
-  } finally { hideLoader(); }
-}
-
-
 // ── ADMIN: Fees ───────────────────────────────────────────────
 async function loadFeesPage() {
   showLoader('\u0e42\u0e2b\u0e25\u0e14\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e04\u0e48\u0e32\u0e2a\u0e48\u0e27\u0e19\u0e01\u0e25\u0e32\u0e07...');
@@ -2830,6 +2548,16 @@ async function loadFeesPage() {
     const fees = await api('getFees');
     const tbody = document.getElementById('tbl-fees');
     if (!tbody) return;
+    var _ft=fees.reduce(function(s,f){return s+Number(f.total||0);},0);
+    _setEl('stat-fee-total','฿'+_ft.toLocaleString());
+    _setEl('stat-fee-paid',fees.filter(function(f){return f.status==='paid';}).length);
+    _setEl('stat-overdue',fees.filter(function(f){return f.status==='overdue';}).length);
+    window._feesAll=fees;
+    var _ft=fees.reduce(function(s,f){return s+Number(f.total||0);},0);
+    _setEl('stat-fee-total','\u0e3f'+_ft.toLocaleString());
+    _setEl('stat-fee-paid',fees.filter(function(f){return f.status==='paid';}).length);
+    _setEl('stat-overdue',fees.filter(function(f){return f.status==='overdue';}).length);
+    window._feesAll=fees;
     tbody.innerHTML = fees.map(function(f) {
       const badge = {
         pending:        '<span class="bd b-wn">\u0e23\u0e2d\u0e0a\u0e33\u0e23\u0e30</span>',
@@ -2860,9 +2588,15 @@ async function loadIssuesPage() {
   showLoader('\u0e42\u0e2b\u0e25\u0e14\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e1b\u0e31\u0e0d\u0e2b\u0e32...');
   try {
     const issues = await api('getIssues');
-    _renderIssueList('list-issues-pending',   issues.filter(function(i){ return i.status==='pending'; }));
-    _renderIssueList('list-issues-inprogress',issues.filter(function(i){ return i.status==='in_progress'; }));
-    _renderIssueList('list-issues-done',      issues.filter(function(i){ return i.status==='resolved'||i.status==='closed'; }));
+    var _op=issues.filter(function(i){return i.status==='pending';});
+    var _do=issues.filter(function(i){return i.status==='in_progress';});
+    var _dn=issues.filter(function(i){return i.status==='resolved'||i.status==='closed';});
+    _setEl('tab-iss-open','\ud83d\udd34 \u0e23\u0e2d'+(_op.length?' ('+_op.length+')':''));
+    _setEl('tab-iss-doing','\ud83d\udfe1 \u0e01\u0e33\u0e25\u0e31\u0e07\u0e14\u0e33\u0e40\u0e19\u0e34\u0e19'+(_do.length?' ('+_do.length+')':''));
+    _setEl('tab-iss-done','\u2705 \u0e40\u0e2a\u0e23\u0e47\u0e08'+(_dn.length?' ('+_dn.length+')':''));
+    _renderIssueList('list-issues-pending',_op);
+    _renderIssueList('list-issues-inprogress',_do);
+    _renderIssueList('list-issues-done',_dn);
   } finally { hideLoader(); }
 }
 function _renderIssueList(elId, items) {
@@ -2957,6 +2691,7 @@ async function loadAnnouncementsPage() {
 async function loadContractorsPage() {
   try {
     const cons = await api('getContractors');
+    window._consAll=cons;
     const el = document.getElementById('list-contractors-approved');
     const elP = document.getElementById('list-contractors-pending');
     const approved = cons.filter(function(c){ return c.status==='approved'; });
@@ -2969,7 +2704,8 @@ function _renderContractorCards(items, showApproveBtn) {
   if (!items.length) return '<div class="empty-state"><div class="es-ico">\ud83d\udd28</div><div class="es-s">\u0e44\u0e21\u0e48\u0e21\u0e35\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23</div></div>';
   return items.map(function(c) {
     const skills = JSON.parse(c.skills||'[]');
-    return '<div class="con-card">' +
+    return '<div class="con-card" onclick="openConDetail(\'' + c.contractor_id + '\')">'+
+
       '<div class="con-head">' +
         '<div class="con-av">\ud83d\udd27</div>' +
         '<div><div class="con-name">' + c.name + '</div><div class="con-phone">\ud83d\udcde ' + c.phone + '</div></div>' +
@@ -3161,8 +2897,9 @@ async function loadResNotifPage() {
   try {
     const viols = await api('getMyViolations');
     const el = document.getElementById('list-my-notifs');
-    if (!el) return;
-    el.innerHTML = viols.map(function(v) {
+    var el2=document.getElementById('list-my-violations');
+    var _html=(function(){
+    return viols.map(function(v) {
       return '<div class="vio-card">' +
         '<div class="vio-t">\u26a0\ufe0f ' + v.title + '</div>' +
         '<div class="vio-d">' + (v.description||'') + '</div>' +
@@ -3170,7 +2907,9 @@ async function loadResNotifPage() {
         (Number(v.penalty_amount)>0 ? '<div style="margin-top:8px;font-size:12.5px;color:var(--dg)">\ud83d\udcb0 \u0e04\u0e48\u0e32\u0e1b\u0e23\u0e31\u0e1a: \u0e3f' + Number(v.penalty_amount).toLocaleString() + '</div>' : '') +
         (v.status === 'pending' ? '<button class="btn btn-sm btn-o" style="margin-top:12px" onclick="doAckViolation(\'' + v.vio_id + '\')">\u2713 \u0e23\u0e31\u0e1a\u0e17\u0e23\u0e32\u0e1a</button>' : '') +
       '</div>';
-    }).join('') || '<div class="empty-state"><div class="es-ico">\u2705</div><div class="es-s">\u0e44\u0e21\u0e48\u0e21\u0e35\u0e01\u0e32\u0e23\u0e41\u0e08\u0e49\u0e40\u0e15\u0e37\u0e2d\u0e19</div></div>';
+    }).join('')||'<div class="empty-state"><div class="es-ico">\u2705</div><div class="es-s">\u0e44\u0e21\u0e48\u0e21\u0e35</div></div>';})();
+    if(el)el.innerHTML=_html;
+    if(el2)el2.innerHTML=_html;
   } catch(e) {}
 }
 
@@ -3193,7 +2932,7 @@ async function loadResNewsPage() {
 async function loadResContractorPage() {
   try {
     const cons = await api('getContractors');
-    const el = document.getElementById('list-res-contractors');
+    const el = document.getElementById('list-contractors-res');
     if (el) el.innerHTML = _renderContractorCards(cons, false)
       .replace('class="con-card"', 'class="con-card" style="cursor:default"');
   } catch(e) {}
@@ -3688,6 +3427,36 @@ function sw(t) {
       if (e.key === 'Enter') doLogin();
     });
 })();
+</script>
+
+<!-- MODAL: เพิ่มสมาชิก -->
+<div class="mo" id="m-adduser" onclick="omOut(event,'m-adduser')">
+<div class="md"><div class="md-handle"></div>
+  <div class="md-hd"><div class="md-hd-ico">👤</div><div><div class="md-title">เพิ่มสมาชิกใหม่</div><div class="md-sub">สร้างบัญชีผู้ใช้งาน</div></div><button class="md-x" onclick="closeM('m-adduser')">✕</button></div>
+  <div class="md-bd">
+    <div class="fr2"><div class="fg"><label class="fl">Username</label><input class="fi" id="adduser-username" placeholder="ชื่อผู้ใช้"></div><div class="fg"><label class="fl">รหัสผ่าน</label><input class="fi" id="adduser-password" type="password" placeholder="อย่างน้อย 6 ตัว"></div></div>
+    <div class="fr2"><div class="fg"><label class="fl">ชื่อที่แสดง</label><input class="fi" id="adduser-display" placeholder="ชื่อ-นามสกุล"></div><div class="fg"><label class="fl">house_id</label><input class="fi" id="adduser-houseid" placeholder="HSE-xxxxx"></div></div>
+    <div class="fr2"><div class="fg"><label class="fl">Role</label><select class="fs" id="adduser-role"><option value="resident">Resident</option><option value="admin">Admin</option></select></div><div class="fg"><label class="fl">เบอร์โทร</label><input class="fi" id="adduser-phone" placeholder="0xx-xxx-xxxx"></div></div>
+  </div>
+  <div class="md-ft"><button class="btn btn-g btn-sm" onclick="closeM('m-adduser')">ยกเลิก</button><button class="btn btn-p btn-sm" onclick="doCreateUser()">สร้างบัญชี</button></div>
+</div></div>
+<script>
+// === DYNAMIC PATCHES ===
+function _safeHouseNo(v){if(!v&&v!==0)return'';var s=String(v);if(/^\d{4}-\d{2}-\d{2}T/.test(s)){var d=new Date(s);if(!isNaN(d))return d.getDate()+'/'+(d.getMonth()+1);}return s;}
+var _housesCache=[];
+async function loadHousesPage(){showLoader('\u0e42\u0e2b\u0e25\u0e14...');try{const h=await api('getHouses');_housesCache=h;const tb=document.getElementById('tbl-houses');if(!tb)return;tb.innerHTML=h.map(function(x){var b={normal:'<span class="bd b-ok">\u25cf \u0e1b\u0e01\u0e15\u0e34</span>',overdue:'<span class="bd b-wn">\u25cf \u0e04\u0e49\u0e32\u0e07</span>',suspended:'<span class="bd b-dg">\u25cf \u0e23\u0e30\u0e07\u0e31\u0e1a</span>',legal:'<span class="bd b-pur">\u2696 \u0e1f\u0e49\u0e2d\u0e07</span>'}[x.status]||'<span class="bd b-mu">'+x.status+'</span>';var dn=_safeHouseNo(x.house_no);return'<tr><td><strong>'+dn+'</strong> <span class="tag">'+(x.soi||'')+'</span></td><td>'+(x.owner_name||'')+'</td><td>'+(x.phone||'')+'</td><td class="text-pr fw-7">\u0e3f'+Number(x.fee_per_year||0).toLocaleString()+'</td><td>'+b+'</td><td><button class="btn btn-xs btn-o" onclick="openEditHouseModal(\''+x.house_id+'\')">\u270f\ufe0f \u0e41\u0e01\u0e49\u0e44\u0e02</button></td></tr>';}).join('');}finally{hideLoader();}}
+async function openEditHouseModal(id){var h=_housesCache.find(function(x){return x.house_id===id;});if(!h){try{h=await api('getHouseById',{house_id:id});}catch(e){}}if(!h){Swal.fire({icon:'error',title:'\u0e44\u0e21\u0e48\u0e1e\u0e1a'});return;}document.getElementById('edithouse-id').value=h.house_id;document.getElementById('edithouse-no').value=_safeHouseNo(h.house_no);document.getElementById('edithouse-soi').value=h.soi||'';document.getElementById('edithouse-area').value=h.area_sqm||'';document.getElementById('edithouse-owner').value=h.owner_name||'';document.getElementById('edithouse-renter').value=h.renter_name||'';document.getElementById('edithouse-phone').value=h.phone||'';document.getElementById('edithouse-email').value=h.email||'';document.getElementById('edithouse-fee').value=h.fee_per_year||'';document.getElementById('edithouse-parking').value=h.parking_fee_year||'';document.getElementById('edithouse-trash').value=h.trash_fee_period||'';document.getElementById('edithouse-statusnote').value=h.status_note||'';var u=document.getElementById('edithouse-usage');if(u)u.value=h.usage_type||'owner';var s=document.getElementById('edithouse-status');if(s)s.value=h.status||'normal';_setEl('edithouse-sub','\u0e1a\u0e49\u0e32\u0e19 '+_safeHouseNo(h.house_no)+' \u00b7 Admin Mode');openM('m-admin-edithouse');}
+async function doSaveEditHouse(){var id=document.getElementById('edithouse-id').value;if(!id)return;var hn=document.getElementById('edithouse-no').value.trim(),own=document.getElementById('edithouse-owner').value.trim();if(!hn||!own){Swal.fire({icon:'warning',title:'\u0e01\u0e23\u0e38\u0e13\u0e32\u0e01\u0e23\u0e2d\u0e01\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25'});return;}showLoader('...');try{await api('updateHouse',{house_id:id,house_no:hn,soi:document.getElementById('edithouse-soi').value.trim(),area_sqm:Number(document.getElementById('edithouse-area').value)||0,owner_name:own,renter_name:document.getElementById('edithouse-renter').value.trim(),phone:document.getElementById('edithouse-phone').value.trim(),email:document.getElementById('edithouse-email').value.trim(),fee_per_year:Number(document.getElementById('edithouse-fee').value)||0,parking_fee_year:Number(document.getElementById('edithouse-parking').value)||0,trash_fee_period:Number(document.getElementById('edithouse-trash').value)||0,usage_type:document.getElementById('edithouse-usage').value,status:document.getElementById('edithouse-status').value,status_note:(document.getElementById('edithouse-statusnote')||{}).value||''});closeM('m-admin-edithouse');await loadHousesPage();Swal.fire({icon:'success',title:'\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08',timer:1500,showConfirmButton:false});}catch(e){Swal.fire({icon:'error',title:'Error',text:e.message});}finally{hideLoader();}}
+function filterFeesTable(){var v=(document.getElementById('fee-filter-status')||{}).value||'';var fees=(window._feesAll||[]).filter(function(f){return!v||f.status===v;});var tb=document.getElementById('tbl-fees');if(!tb)return;if(!fees.length){tb.innerHTML='<tr><td colspan="9" class="text-mu" style="text-align:center;padding:20px">\u0e44\u0e21\u0e48\u0e21\u0e35\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23</td></tr>';return;}tb.innerHTML=fees.map(function(f){var b={pending:'<span class="bd b-wn">\u0e23\u0e2d</span>',slip_submitted:'<span class="bd b-pr">\u0e2a\u0e25\u0e34\u0e1b</span>',paid:'<span class="bd b-ok">\u0e0a\u0e33\u0e23\u0e30</span>',overdue:'<span class="bd b-dg">\u0e04\u0e49\u0e32\u0e07</span>'}[f.status]||'<span class="bd b-mu">'+f.status+'</span>';var ab=f.status==='slip_submitted'?'<button class="btn btn-xs btn-a" onclick="doApproveSlip(\''+f.fee_id+'\')">\u2713 Approve</button>':'';return'<tr><td><strong>'+(f.house_id||'')+'</strong></td><td>'+f.period+'/'+f.year+'</td><td>\u0e3f'+Number(f.fee_amount||0).toLocaleString()+'</td><td>\u0e3f'+Number(f.parking_fee||0).toLocaleString()+'</td><td>\u0e3f'+Number(f.trash_fee||0).toLocaleString()+'</td><td class="text-dg">'+(Number(f.penalty_fee||0)>0?'\u0e3f'+Number(f.penalty_fee).toLocaleString():'\u2014')+'</td><td class="fw-7">\u0e3f'+Number(f.total||0).toLocaleString()+'</td><td>'+b+'</td><td style="display:flex;gap:5px">'+ab+'<button class="btn btn-xs btn-o" onclick="openFeeDetail(\''+f.fee_id+'\')">\u0e23\u0e32\u0e22\u0e25\u0e30\u0e40\u0e2d\u0e35\u0e22\u0e14</button></td></tr>';}).join('');}
+var _curFee=null;
+async function openFeeDetail(id){_curFee=id;var f=(window._feesAll||[]).find(function(x){return x.fee_id===id;});if(!f){try{var fs=await api('getFees');window._feesAll=fs;f=fs.find(function(x){return x.fee_id===id;});}catch(e){}}if(!f){Swal.fire({icon:'error',title:'\u0e44\u0e21\u0e48\u0e1e\u0e1a'});return;}_setEl('fd-sub','\u0e1a\u0e49\u0e32\u0e19 '+(f.house_id||'')+' \u00b7 '+(f.period||'')+'/'+(f.year||''));_setEl('fd-fee-amount','\u0e3f'+Number(f.fee_amount||0).toLocaleString());_setEl('fd-parking','\u0e3f'+Number(f.parking_fee||0).toLocaleString());_setEl('fd-trash','\u0e3f'+Number(f.trash_fee||0).toLocaleString());_setEl('fd-carry','\u0e3f'+Number(f.overdue_carry||0).toLocaleString());_setEl('fd-penalty10','\u0e3f'+Number(f.penalty_10pct||0).toLocaleString());_setEl('fd-collection','\u0e3f'+Number(f.collection_fee||0).toLocaleString());_setEl('fd-penalty','\u0e3f'+Number(f.penalty_fee||0).toLocaleString());_setEl('fd-discount','-\u0e3f'+Number(f.discount||0).toLocaleString());_setEl('fd-total','\u0e3f'+Number(f.total||0).toLocaleString());var ss=document.getElementById('fd-slip-section');if(ss)ss.style.display=f.slip_url?'block':'none';var sl=document.getElementById('fd-slip-link');if(sl&&f.slip_url)sl.href=f.slip_url;var ab=document.getElementById('btn-fee-approve');if(ab)ab.style.display=f.status==='slip_submitted'?'inline-flex':'none';openM('m-fee-detail');}
+async function doApproveSlipFromModal(){if(!_curFee)return;showLoader('...');try{await api('approveSlip',{fee_id:_curFee});closeM('m-fee-detail');await loadFeesPage();loadAdminDashboard();Swal.fire({icon:'success',title:'Approve \u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08',timer:1200,showConfirmButton:false});}catch(e){Swal.fire({icon:'error',title:'Error',text:e.message});}finally{hideLoader();}}
+async function loadReportsPage(){try{const r=await api('getReports');const el=document.getElementById('list-reports');if(!el)return;if(!r.length){el.innerHTML='<p class="text-mu" style="text-align:center;padding:20px;font-size:13px;grid-column:1/-1">\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35</p>';return;}var g={};r.forEach(function(x){var k=x.month+'/'+x.year;if(!g[k])g[k]=[];g[k].push(x);});el.innerHTML=Object.keys(g).map(function(k){var it=g[k],tot=it.reduce(function(s,x){return s+Number(x.budget||0);},0);return'<div class="card"><div class="ch"><div class="ch-ico">&#127942;</div><div class="ct">\u0e40\u0e14\u0e37\u0e2d\u0e19 '+k+'</div></div><div class="cb">'+it.map(function(x){return'<div class="ann"><div class="ann-dot ad-evt"></div><div><div class="ann-t">'+x.title+'</div><div class="ann-b">\u0e07\u0e1a \u0e3f'+Number(x.budget||0).toLocaleString()+(x.summary?' \u00b7 '+x.summary.substring(0,60):'')+'</div></div></div>';}).join('')+'<div class="fee-row" style="margin-top:8px;border-top:1px solid var(--bo);padding-top:8px"><div class="fee-lbl">\u0e23\u0e27\u0e21\u0e07\u0e1a</div><div class="fee-val fw-7 text-pr">\u0e3f'+tot.toLocaleString()+'</div></div></div></div>';}).join('');}catch(e){}}
+async function loadResWorkPage(){try{const r=await api('getReports');const el=document.getElementById('list-res-reports');if(!el)return;if(!r.length){el.innerHTML='<p class="text-mu" style="text-align:center;padding:20px;font-size:13px">\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35</p>';return;}var g={};r.forEach(function(x){var k=x.month+'/'+x.year;if(!g[k])g[k]=[];g[k].push(x);});el.innerHTML=Object.keys(g).map(function(k){return'<div class="card" style="margin-bottom:14px"><div class="ch"><div class="ch-ico">&#127942;</div><div class="ct">\u0e40\u0e14\u0e37\u0e2d\u0e19 '+k+'</div></div><div class="cb">'+g[k].map(function(x){return'<div class="ann"><div class="ann-dot ad-evt"></div><div><div class="ann-t">'+x.title+'</div><div class="ann-b">\u0e07\u0e1a \u0e3f'+Number(x.budget||0).toLocaleString()+(x.summary?' \u00b7 '+x.summary.substring(0,60):'')+'</div></div></div>';}).join('')+'</div></div>';}).join('');}catch(e){}}
+async function doCreateUser(){var un=document.getElementById('adduser-username').value.trim(),pw=document.getElementById('adduser-password').value,dn=document.getElementById('adduser-display').value.trim(),hi=document.getElementById('adduser-houseid').value.trim(),ro=document.getElementById('adduser-role').value,ph=document.getElementById('adduser-phone').value.trim();if(!un||!pw){Swal.fire({icon:'warning',title:'\u0e01\u0e23\u0e38\u0e13\u0e32\u0e01\u0e23\u0e2d\u0e01 Username \u0e41\u0e25\u0e30 Password'});return;}if(pw.length<6){Swal.fire({icon:'warning',title:'Password \u0e15\u0e49\u0e2d\u0e07\u0e21\u0e35\u0e2d\u0e22\u0e48\u0e32\u0e07\u0e19\u0e49\u0e2d\u0e22 6 \u0e15\u0e31\u0e27'});return;}showLoader('...');try{await api('createUser',{username:un,password:pw,display_name:dn,house_id:hi,role:ro,phone:ph});closeM('m-adduser');await loadUsersPage();Swal.fire({icon:'success',title:'\u0e2a\u0e23\u0e49\u0e32\u0e07\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08',timer:1500,showConfirmButton:false});}catch(e){Swal.fire({icon:'error',title:'Error',text:e.message});}finally{hideLoader();}}
+async function doSaveResProfile(){var ph=(document.getElementById('res-prof-phone')||{}).value||'',em=(document.getElementById('res-prof-email')||{}).value||'';if(!APP.user||!APP.user.house_id)return;showLoader('...');try{await api('submitChangeReq',{house_id:APP.user.house_id,target_type:'house',field_changes:JSON.stringify({phone:{old:'',new:ph},email:{old:'',new:em}}),note:'\u0e2d\u0e31\u0e1b\u0e40\u0e14\u0e15'});Swal.fire({icon:'success',title:'\u0e2a\u0e48\u0e07\u0e04\u0e33\u0e02\u0e2d\u0e41\u0e25\u0e49\u0e27',timer:2000,showConfirmButton:false});}catch(e){Swal.fire({icon:'error',title:'Error',text:e.message});}finally{hideLoader();}}
+async function doCreateContractor(){var nm=(document.getElementById('newcon-name')||{}).value||'',ph=(document.getElementById('newcon-phone')||{}).value||'',ar=(document.getElementById('newcon-area')||{}).value||'',bi=(document.getElementById('newcon-bio')||{}).value||'';var sc=document.getElementById('newcon-skills-container');var sk=sc?Array.from(sc.querySelectorAll('input[type=checkbox]:checked')).map(function(x){return x.parentElement.textContent.trim();}).join(', '):'';if(!nm.trim()||!ph.trim()){Swal.fire({icon:'warning',title:'\u0e01\u0e23\u0e38\u0e13\u0e32\u0e01\u0e23\u0e2d\u0e01\u0e0a\u0e37\u0e48\u0e2d\u0e41\u0e25\u0e30\u0e40\u0e1a\u0e2d\u0e23\u0e4c\u0e42\u0e17\u0e23'});return;}showLoader('...');try{await api('createContractor',{name:nm.trim(),phone:ph.trim(),area:ar,bio:bi,skills:sk,status:'approved'});closeM('m-newcon');await loadContractorsPage();Swal.fire({icon:'success',title:'\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08',timer:1500,showConfirmButton:false});}catch(e){Swal.fire({icon:'error',title:'Error',text:e.message});}finally{hideLoader();}}
+function openConDetail(cid){var c=(window._consAll||[]).find(function(x){return x.contractor_id===cid;});if(!c)return;var sk=[];try{sk=JSON.parse(c.skills||'[]');}catch(e){sk=c.skills?c.skills.split(','):[];}  _setEl('cd-name',c.name||'\u2014');_setEl('cd-rating',Number(c.rating_avg)>0?'&#11088;'+Number(c.rating_avg).toFixed(1)+' \u00b7 '+(c.rating_count||0)+' \u0e23\u0e35\u0e27\u0e34\u0e27':'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e23\u0e35\u0e27\u0e34\u0e27');_setEl('cd-phone','&#128222; '+(c.phone||'\u2014'));_setEl('cd-line',c.line_id||'\u2014');_setEl('cd-area','&#128205; '+(c.area||'\u2014'));_setEl('cd-status',c.status==='approved'?'\u2713 \u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34':'\u23f3 \u0e23\u0e2d');var se=document.getElementById('cd-skills');if(se)se.innerHTML=sk.map(function(s){return'<span class="con-tag">'+s.trim()+'</span>';}).join('')||'\u2014';_setEl('cd-bio',c.bio||'\u2014');var tl=document.getElementById('cd-tel-link');if(tl)tl.href=c.phone?'tel:'+c.phone.replace(/-/g,''):'#';openM('m-condetail');}
 </script>
 </body>
 </html>
