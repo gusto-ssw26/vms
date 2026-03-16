@@ -2074,43 +2074,54 @@ tr:hover td{background:var(--bg)}
   <div class="md-handle"></div>
   <div class="md-hd">
     <div class="md-hd-ico">✏️</div>
-    <div><div class="md-title">แก้ไขข้อมูลบ้าน</div><div class="md-sub">บ้าน 10/1 · Admin Mode</div></div>
+    <div><div class="md-title">แก้ไขข้อมูลบ้าน</div><div class="md-sub" id="edithouse-sub">Admin Mode</div></div>
     <button class="md-x" onclick="closeM('m-admin-edithouse')">✕</button>
   </div>
+  <input type="hidden" id="edithouse-id">
   <div class="md-bd">
     <div class="sl">📍 ที่อยู่</div>
     <div class="fr3">
-      <div class="fg"><label class="fl">บ้านเลขที่</label><input class="fi" value="10/1"></div>
-      <div class="fg"><label class="fl">ซอย</label><input class="fi" value="ซอย 3"></div>
-      <div class="fg"><label class="fl">พื้นที่ (ตร.ว.)</label><input class="fi" value="52" type="number"></div>
+      <div class="fg"><label class="fl">บ้านเลขที่</label><input class="fi" id="edithouse-no"></div>
+      <div class="fg"><label class="fl">ซอย</label><input class="fi" id="edithouse-soi"></div>
+      <div class="fg"><label class="fl">พื้นที่ (ตร.ว.)</label><input class="fi" id="edithouse-area" type="number"></div>
     </div>
     <div class="sl">👤 เจ้าของ</div>
     <div class="fr2">
-      <div class="fg"><label class="fl">เจ้าของกรรมสิทธิ์</label><input class="fi" value="สมชาย ใจดี"></div>
-      <div class="fg"><label class="fl">ผู้เช่า</label><input class="fi" placeholder="(ไม่มี)"></div>
+      <div class="fg"><label class="fl">เจ้าของกรรมสิทธิ์</label><input class="fi" id="edithouse-owner"></div>
+      <div class="fg"><label class="fl">ผู้เช่า</label><input class="fi" id="edithouse-renter" placeholder="(ไม่มี)"></div>
     </div>
     <div class="fr2">
-      <div class="fg"><label class="fl">เบอร์โทร</label><input class="fi" id="edit-phone" value="081-234-5678"></div>
-      <div class="fg"><label class="fl">อีเมล</label><input class="fi" id="edit-email" value="somchai@email.com"></div>
+      <div class="fg"><label class="fl">เบอร์โทร</label><input class="fi" id="edithouse-phone"></div>
+      <div class="fg"><label class="fl">อีเมล</label><input class="fi" id="edithouse-email"></div>
     </div>
     <div class="sl">💰 ค่าธรรมเนียม</div>
     <div class="fr3">
-      <div class="fg"><label class="fl">ค่าส่วนกลาง/ปี</label><input class="fi" value="4500" type="number"></div>
-      <div class="fg"><label class="fl">ค่าจอดรถ/ปี</label><input class="fi" value="600" type="number"></div>
-      <div class="fg"><label class="fl">ค่าขยะ/งวด</label><input class="fi" value="200" type="number"></div>
+      <div class="fg"><label class="fl">ค่าส่วนกลาง/ปี</label><input class="fi" id="edithouse-fee" type="number"></div>
+      <div class="fg"><label class="fl">ค่าจอดรถ/ปี</label><input class="fi" id="edithouse-parking" type="number"></div>
+      <div class="fg"><label class="fl">ค่าขยะ/งวด</label><input class="fi" id="edithouse-trash" type="number"></div>
     </div>
     <div class="fr2">
-      <div class="fg"><label class="fl">ประเภทบ้าน</label>
-        <select class="fs"><option>อยู่เอง</option><option>ให้เช่า</option><option>ว่าง</option></select>
+      <div class="fg"><label class="fl">ประเภทการใช้</label>
+        <select class="fs" id="edithouse-usage">
+          <option value="owner">อยู่เอง</option>
+          <option value="rent">ให้เช่า</option>
+          <option value="vacant">ว่าง</option>
+        </select>
       </div>
       <div class="fg"><label class="fl">สถานะ</label>
-        <select class="fs"><option>ปกติ</option><option>ค้างชำระ</option><option>ระงับกรมที่ดิน</option><option>ฟ้องร้อง</option></select>
+        <select class="fs" id="edithouse-status">
+          <option value="normal">ปกติ</option>
+          <option value="overdue">ค้างชำระ</option>
+          <option value="suspended">ระงับกรมที่ดิน</option>
+          <option value="legal">ฟ้องร้อง</option>
+        </select>
       </div>
     </div>
+    <div class="fg"><label class="fl">หมายเหตุสถานะ</label><input class="fi" id="edithouse-statusnote" placeholder="(ถ้ามี)"></div>
   </div>
   <div class="md-ft">
     <button class="btn btn-g btn-sm" onclick="closeM('m-admin-edithouse')">ยกเลิก</button>
-    <button class="btn btn-p btn-sm" onclick="sw('save');closeM('m-admin-edithouse')">💾 บันทึก</button>
+    <button class="btn btn-p btn-sm" onclick="doSaveEditHouse()">💾 บันทึก</button>
   </div>
 </div></div>
 
@@ -2706,10 +2717,25 @@ async function loadPageData(view, page) {
 }
 
 // ── ADMIN: Houses ─────────────────────────────────────────────
+// Fix: Sheets auto-converts "30/9" style house_no to Date object
+function _safeHouseNo(val) {
+  if (!val && val !== 0) return '';
+  var s = String(val);
+  // ISO datetime from Sheets date conversion e.g. "2026-09-30T17:00:00.000Z"
+  if (/^\d{4}-\d{2}-\d{2}T/.test(s)) {
+    var d = new Date(s);
+    if (!isNaN(d)) return d.getDate() + '/' + (d.getMonth() + 1);
+  }
+  return s;
+}
+
+var _housesCache = [];
+
 async function loadHousesPage() {
   showLoader('\u0e42\u0e2b\u0e25\u0e14\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e1a\u0e49\u0e32\u0e19...');
   try {
     const houses = await api('getHouses');
+    _housesCache = houses;
     const tbody  = document.getElementById('tbl-houses');
     if (!tbody) return;
     tbody.innerHTML = houses.map(function(h) {
@@ -2719,8 +2745,9 @@ async function loadHousesPage() {
         suspended: '<span class="bd b-dg">\u25cf \u0e23\u0e30\u0e07\u0e31\u0e1a</span>',
         legal:     '<span class="bd b-pur">\u2696\ufe0f \u0e1f\u0e49\u0e2d\u0e07\u0e23\u0e49\u0e2d\u0e07</span>'
       }[h.status] || '<span class="bd b-mu">' + h.status + '</span>';
+      var displayNo = _safeHouseNo(h.house_no);
       return '<tr>' +
-        '<td><strong>' + h.house_no + '</strong> <span class="tag">' + (h.soi||'') + '</span></td>' +
+        '<td><strong>' + displayNo + '</strong> <span class="tag">' + (h.soi||'') + '</span></td>' +
         '<td>' + (h.owner_name||'') + '</td>' +
         '<td>' + (h.phone||'') + '</td>' +
         '<td class="text-pr fw-7">\u0e3f' + Number(h.fee_per_year||0).toLocaleString() + '</td>' +
@@ -2730,6 +2757,71 @@ async function loadHousesPage() {
     }).join('');
   } finally { hideLoader(); }
 }
+
+async function openEditHouseModal(houseId) {
+  var h = _housesCache.find(function(x) { return x.house_id === houseId; });
+  if (!h) {
+    try { h = await api('getHouseById', { house_id: houseId }); } catch(e) {}
+  }
+  if (!h) { Swal.fire({ icon:'error', title:'\u0e44\u0e21\u0e48\u0e1e\u0e1a\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e1a\u0e49\u0e32\u0e19' }); return; }
+
+  document.getElementById('edithouse-id').value         = h.house_id;
+  document.getElementById('edithouse-no').value         = _safeHouseNo(h.house_no);
+  document.getElementById('edithouse-soi').value        = h.soi || '';
+  document.getElementById('edithouse-area').value       = h.area_sqm || '';
+  document.getElementById('edithouse-owner').value      = h.owner_name || '';
+  document.getElementById('edithouse-renter').value     = h.renter_name || '';
+  document.getElementById('edithouse-phone').value      = h.phone || '';
+  document.getElementById('edithouse-email').value      = h.email || '';
+  document.getElementById('edithouse-fee').value        = h.fee_per_year || '';
+  document.getElementById('edithouse-parking').value    = h.parking_fee_year || '';
+  document.getElementById('edithouse-trash').value      = h.trash_fee_period || '';
+  document.getElementById('edithouse-statusnote').value = h.status_note || '';
+
+  var usageSel  = document.getElementById('edithouse-usage');
+  var statusSel = document.getElementById('edithouse-status');
+  if (usageSel)  usageSel.value  = h.usage_type || 'owner';
+  if (statusSel) statusSel.value = h.status     || 'normal';
+
+  _setEl('edithouse-sub', '\u0e1a\u0e49\u0e32\u0e19 ' + _safeHouseNo(h.house_no) + ' \u00b7 Admin Mode');
+  openM('m-admin-edithouse');
+}
+
+async function doSaveEditHouse() {
+  var houseId = document.getElementById('edithouse-id').value;
+  if (!houseId) return;
+  var houseNo   = document.getElementById('edithouse-no').value.trim();
+  var ownerName = document.getElementById('edithouse-owner').value.trim();
+  if (!houseNo || !ownerName) {
+    Swal.fire({ icon:'warning', title:'\u0e01\u0e23\u0e38\u0e13\u0e32\u0e01\u0e23\u0e2d\u0e01\u0e1a\u0e49\u0e32\u0e19\u0e40\u0e25\u0e02\u0e17\u0e35\u0e48\u0e41\u0e25\u0e30\u0e0a\u0e37\u0e48\u0e2d\u0e40\u0e08\u0e49\u0e32\u0e02\u0e2d\u0e07' });
+    return;
+  }
+  showLoader('\u0e01\u0e33\u0e25\u0e31\u0e07\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01...');
+  try {
+    await api('updateHouse', {
+      house_id:         houseId,
+      house_no:         houseNo,
+      soi:              document.getElementById('edithouse-soi').value.trim(),
+      area_sqm:         Number(document.getElementById('edithouse-area').value) || 0,
+      owner_name:       ownerName,
+      renter_name:      document.getElementById('edithouse-renter').value.trim(),
+      phone:            document.getElementById('edithouse-phone').value.trim(),
+      email:            document.getElementById('edithouse-email').value.trim(),
+      fee_per_year:     Number(document.getElementById('edithouse-fee').value) || 0,
+      parking_fee_year: Number(document.getElementById('edithouse-parking').value) || 0,
+      trash_fee_period: Number(document.getElementById('edithouse-trash').value) || 0,
+      usage_type:       document.getElementById('edithouse-usage').value,
+      status:           document.getElementById('edithouse-status').value,
+      status_note:      document.getElementById('edithouse-statusnote').value.trim(),
+    });
+    closeM('m-admin-edithouse');
+    await loadHousesPage();
+    Swal.fire({ icon:'success', title:'\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e40\u0e23\u0e35\u0e22\u0e1a\u0e23\u0e49\u0e2d\u0e22', timer:1500, showConfirmButton:false });
+  } catch(err) {
+    Swal.fire({ icon:'error', title:'\u0e40\u0e01\u0e34\u0e14\u0e02\u0e49\u0e2d\u0e1c\u0e34\u0e14\u0e1e\u0e25\u0e32\u0e14', text: err.message });
+  } finally { hideLoader(); }
+}
+
 
 // ── ADMIN: Fees ───────────────────────────────────────────────
 async function loadFeesPage() {

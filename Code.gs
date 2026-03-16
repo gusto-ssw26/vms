@@ -143,6 +143,10 @@ function getSheet(name) {
 }
 
 // ── sheetToObjects ───────────────────────────────────────────
+// DATE_FIELDS: columns that should always be returned as plain strings
+// to prevent Sheets auto-converting "30/9" house_no into Date objects
+const _STRING_FIELDS = ['house_no', 'plate_number', 'phone', 'contact_phone'];
+
 function sheetToObjects(name) {
   const sh   = getSheet(name);
   const data = sh.getDataRange().getValues();
@@ -152,7 +156,15 @@ function sheetToObjects(name) {
     .filter(r => r[0] !== '')           // skip empty rows
     .map(r => {
       const o = {};
-      hdrs.forEach((h, i) => { o[h] = r[i] === '' ? '' : r[i]; });
+      hdrs.forEach((h, i) => {
+        let val = r[i];
+        // Force string fields — prevents Sheets Date auto-conversion
+        if (_STRING_FIELDS.includes(h) && val instanceof Date) {
+          // Reconstruct original slash-notation: e.g. "30/9" stored as Date
+          val = val.getDate() + '/' + (val.getMonth() + 1);
+        }
+        o[h] = val === '' ? '' : val;
+      });
       return o;
     });
 }
