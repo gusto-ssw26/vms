@@ -2564,7 +2564,7 @@ async function _loadDashSlips() {
       return '<tr><td><strong>' + f.house_id + '</strong></td>' +
         '<td class="text-pr fw-7">฿' + Number(f.total||0).toLocaleString() + '</td>' +
         '<td><span class="bd b-pr">' + f.period + '/' + f.year + '</span></td>' +
-        '<td><button class="btn btn-xs btn-a" onclick="doApproveSlip('' + f.fee_id + '')">✓</button></td></tr>';
+        '<td><button class="btn btn-xs btn-a" onclick="doApproveSlip(\'' + f.fee_id + '\')">✓</button></td></tr>';
     }).join('');
   } catch(e) {}
 }
