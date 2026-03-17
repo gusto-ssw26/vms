@@ -1143,10 +1143,7 @@ tr:hover td{background:var(--bg)}
           <div class="card">
             <div class="ch"><div class="ch-ico">🧾</div><div class="ct">สลิปรอตรวจสอบ</div><button class="btn btn-xs btn-o">ดูทั้งหมด</button></div>
             <div class="tw"><table><thead><tr><th>บ้าน</th><th>ยอด</th><th>งวด</th><th></th></tr></thead><tbody id="tbl-slips-dash">
-              <tr><td><strong>10/1</strong></td><td class="text-pr fw-7">฿2,850</td><td><span class="bd b-pr">H1/68</span></td><td><button class="btn btn-xs btn-a" onclick="sw('approve')">✓</button></td></tr>
-              <tr><td><strong>15/3</strong></td><td class="text-pr fw-7">฿3,200</td><td><span class="bd b-pr">H1/68</span></td><td><button class="btn btn-xs btn-a" onclick="sw('approve')">✓</button></td></tr>
-              <tr><td><strong>22/7</strong></td><td class="text-wn fw-7">฿1,500</td><td><span class="bd b-wn">ค้างปี 67</span></td><td><button class="btn btn-xs btn-a" onclick="sw('approve')">✓</button></td></tr>
-              <tr><td><strong>31/2</strong></td><td class="text-pr fw-7">฿4,200</td><td><span class="bd b-pr">H1/68</span></td><td><button class="btn btn-xs btn-a" onclick="sw('approve')">✓</button></td></tr>
+              <tr><td colspan="4" class="text-mu" style="text-align:center;padding:16px">กำลังโหลด...</td></tr>
             </tbody></table></div>
           </div>
           <div class="card">
@@ -1192,18 +1189,16 @@ tr:hover td{background:var(--bg)}
       <div id="p-admin-fees" class="pane">
         <div class="ph"><div class="ph-in"><div style="display:flex;align-items:center;gap:13px"><div class="ph-ico">💰</div><div><div class="ph-h1">ค่าส่วนกลาง</div><div class="ph-sub">จัดการใบแจ้งหนี้และการชำระ</div></div></div><div class="ph-acts"><button class="btn btn-ghost btn-sm" onclick="doGenerateFees()">⚡ Generate ใบแจ้งหนี้</button></div></div></div>
         <div class="stats" style="grid-template-columns:repeat(3,1fr)">
-          <div class="sc"><div class="sc-ico p">💰</div><div><div class="sc-v" style="font-size:15px">฿384,200</div><div class="sc-l">รวมทั้งหมด</div></div></div>
-          <div class="sc"><div class="sc-ico a">✓</div><div><div class="sc-v">104</div><div class="sc-l">ชำระแล้ว</div></div></div>
-          <div class="sc"><div class="sc-ico d">⚠️</div><div><div class="sc-v" id="stat-overdue">24</div><div class="sc-l">ค้างชำระ</div></div></div>
+          <div class="sc"><div class="sc-ico p">💰</div><div><div class="sc-v" id="stat-fee-total" style="font-size:15px">—</div><div class="sc-l">รวมทั้งหมด</div></div></div>
+          <div class="sc"><div class="sc-ico a">✓</div><div><div class="sc-v" id="stat-fee-paid">—</div><div class="sc-l">ชำระแล้ว</div></div></div>
+          <div class="sc"><div class="sc-ico d">⚠️</div><div><div class="sc-v" id="stat-overdue">—</div><div class="sc-l">ค้างชำระ</div></div></div>
         </div>
         <div class="card">
           <div class="ch"><div class="ch-ico">💰</div><div class="ct">รายการค่าส่วนกลาง</div>
             <select class="fs" style="width:auto;padding:5px 10px;font-size:12px"><option>ทุกสถานะ</option><option>รอชำระ</option><option>ชำระแล้ว</option><option>ค้างชำระ</option></select>
           </div>
           <div class="tw"><table><thead><tr><th>บ้าน</th><th>งวด/ปี</th><th>ส่วนกลาง</th><th>จอดรถ</th><th>ขยะ</th><th>ค่าปรับ</th><th>รวม</th><th>สถานะ</th><th></th></tr></thead><tbody id="tbl-fees">
-            <tr><td><strong>10/1</strong></td><td>H1/68</td><td>฿2,250</td><td>฿300</td><td>฿200</td><td>—</td><td class="text-pr fw-7">฿2,750</td><td><span class="bd b-wn">รอชำระ</span></td><td><button class="btn btn-xs btn-o" onclick="openM('m-fee-detail')">รายละเอียด</button></td></tr>
-            <tr><td><strong>15/3</strong></td><td>H1/68</td><td>฿2,600</td><td>฿300</td><td>฿200</td><td class="text-dg">฿500</td><td class="text-dg fw-7">฿3,600</td><td><span class="bd b-dg">ค้างชำระ</span></td><td><button class="btn btn-xs btn-o" onclick="openM('m-fee-detail')">รายละเอียด</button></td></tr>
-            <tr><td><strong>22/7</strong></td><td>H2/67</td><td>฿1,900</td><td>—</td><td>฿200</td><td>—</td><td class="text-ok fw-7">฿2,100</td><td><span class="bd b-ok">ชำระแล้ว</span></td><td><button class="btn btn-xs btn-o" onclick="openM('m-fee-detail')">รายละเอียด</button></td></tr>
+            <tr><td colspan="9" class="text-mu" style="text-align:center;padding:20px">กำลังโหลด...</td></tr>
           </tbody></table></div>
         </div>
       </div>
@@ -2372,7 +2367,7 @@ async function _loadDashSlips() {
       return '<tr><td><strong>' + f.house_id + '</strong></td>' +
         '<td class="text-pr fw-7">฿' + Number(f.total||0).toLocaleString() + '</td>' +
         '<td><span class="bd b-pr">' + f.period + '/' + f.year + '</span></td>' +
-        '<td><button class="btn btn-xs btn-a" onclick="doApproveSlip('\'' + f.fee_id + '\')">✓</button></td></tr>';
+        '<td><button class="btn btn-xs btn-a" onclick="doApproveSlip(\'' + f.fee_id + '\')">✓</button></td></tr>';
     }).join('');
   } catch(e) {}
 }
